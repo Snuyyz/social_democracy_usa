@@ -175,7 +175,7 @@ go-to: election_algorithm.primary_algorithm
 
 = Projected Democratic primary results
 
-(if the primary were held now):
+(if the primary were held now): 
 
 {!<span class="tooltip-text" title="Democratic-socialist insurgents (DSA/Squad-aligned).">DSA Left</span>!}: [+ primary_delegate_share_insurgent +]%
 
