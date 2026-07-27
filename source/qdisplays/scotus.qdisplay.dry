@@ -1,0 +1,13 @@
+
+# SCOTUS composition - the independent check that isn't up for direct
+# election (was: no direct Weimar equivalent; closest analogue is how
+# Hindenburg's own disposition mattered independent of Reichstag math).
+# -10 = solid liberal majority, +10 = solid conservative majority.
+
+(..-7) solid liberal majority
+(-7..-3) liberal-leaning majority
+(-3..-0.5) narrow liberal majority
+(-0.5..0.5) evenly divided
+(0.5..3) narrow conservative majority
+(3..7) conservative-leaning majority
+(7..) solid conservative majority
