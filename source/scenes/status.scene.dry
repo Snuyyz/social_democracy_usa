@@ -18,176 +18,173 @@ if (Q.economic_growth) {
 
 [+ month : month +] [+ year +]
 
-Resources available: [+ resources +]
+Organizational resources available: [+ resources +]
 
-SPD position: [? if spd_toleration : toleration ?][? if spd_in_government : in government - ?][? if spd_toleration == 0 and spd_in_government == 0 and spd_caretaker == 0 : opposition ?][? if spd_caretaker : caretaker government ?]
-[? if in_weimar_coalition and spd_in_government: Weimar Coalition ?][? if in_grand_coalition and spd_in_government: Grand Coalition ?][? if in_popular_front and spd_in_government: Popular Front ?][? if in_left_front and spd_in_government: Left Front ?][? if in_spd_majority and spd_in_government: SPD majority ?][? if in_minority_government and spd_in_government: minority government ?][? if in_emergency_government and spd_in_government: emergency government ?]
+Coalition position: [? if not dem_president and not dem_house and not dem_senate : full opposition ?][? if dem_president or dem_house or dem_senate : holding [? if dem_president : the presidency ?][? if dem_president and (dem_house or dem_senate) : , ?][? if dem_house : the House ?][? if dem_house and dem_senate : , ?][? if dem_senate : the Senate ?] ?]
 
-[? if spd_in_government and not in_spd_majority and not in_left_front : Coalition dissent: [+ coalition_dissent : coalition_dissent +] ?]
+Insurgent influence within the coalition: [? if primary_winner_faction == "insurgent" : the last nominee came from our wing ?][? if primary_winner_faction != "insurgent" : the party establishment still controls the nomination ?]
 
-[? if spd_in_government and (in_left_front or in_popular_front): KPD coalition dissent: [+ kpd_coalition_dissent : coalition_dissent +] ?]
-
-Internal dissent: [+ dissent_percent : dissent +]
+Internal coalition dissent: [+ dissent_percent : dissent +]
 
 = Government
 
-President: [+ president +]
+President: [+ president +] ([+ president_party +])
 
-Chancellor: [+ chancellor +] ([+ chancellor_party +])
+[? if dem_president : The White House is held by our coalition. ?][? if not dem_president : The White House is held by the opposition. ?]
 
-Reichstag composition:
+Congress:
 
-# 1928: 30, 1930: 25, 1932: 22
-{!<span class="tooltip-text" title="Social Democratic Party of Germany">SPD</span>!}: [+ spd_r +]%
-[? if sapd_formed and sapd_r > 0: SAPD: [+ sapd_r +]% ?]
-# 1928: 15, 1930: 15, 1932: 
-{!<span class="tooltip-text" title="Center Party + Bavarian People's Party">Z + BVP</span>!}: [+ z_r +]%
-# 1928: 10, 1930: 13
-{!<span class="tooltip-text" title="Communist Party of Germany">KPD</span>!}: [+ kpd_r +]%
-# 1928: 5, 1930: 4 (as DstP)
-{!<span class="tooltip-text" title="German Democratic Party">!}[? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]{!</span>!}: [+ ddp_r +]%
-# 1928: 9, 1930: 5
-{!<span class="tooltip-text" title="German People's Party">DVP</span>!}: [+ dvp_r +]%
-# 1928: 14, 1930: 7
-{!<span class="tooltip-text" title="German National People's Party">DNVP</span>!}: [+ dnvp_r +]%
-# 1928: 3, 1930: 18
-{!<span class="tooltip-text" title="National-Socialist German Worker's Party (Nazis)">NSDAP</span>!}: [+ nsdap_r +]%
-# 1928: 9, 1930: 10
-Others: [+ other_r +]%
+House: Democrats [+ dem_house_seats +] - Republicans [+ gop_house_seats +] ([? if dem_house : Democratic majority ?][? if not dem_house : Republican majority?])
 
-[? if spd_in_government = 1 : Budget: [+ budget +] ?]
+Senate: Democrats [+ dem_senate_seats +] - Republicans [+ gop_senate_seats +] ([? if dem_senate : Democratic majority ?][? if not dem_senate : Republican majority?])
 
-Next election: [+ next_election_month : month +] [+ next_election_year +]
+{!<span class="tooltip-text" title="The Supreme Court is not up for direct election, and acts as an independent check on the elected branches, the way the Weimar presidency could act independently of the Reichstag.">Supreme Court composition</span>!}: [+ scotus_composition : scotus +]
+
+[? if scotus_hostile : The Court has shown itself willing to strike down or block our legislative wins. ?]
+
+Next election: [+ next_election_month : month +] [+ next_election_year +] ([+ next_election_type +])
 
 = Economics
 
 Inflation: [+ inflation_2 +]%
 
-[? if black_thursday_seen = 1 : Unemployment: [+ unemployed_2 +]% ?]
+Unemployment: [+ unemployed_2 +]%
 
 Economic growth: [+ economic_growth_2 +]%
 
-
-
-# = Public Opinion
+Median household income: $[+ income +]
 
 @politics
 
 = Inter-party Relations
 
+{!<span class="tooltip-text" title="The traditional, business-oriented wing of the Republican Party, as distinct from its Trumpist wing.">Republican establishment</span>!}: [+ gop_estab_relation : relationships +]
 
-{!<span class="tooltip-text" title="Center Party">Z</span>!}: [+ z_relation : relationships +]
+{!<span class="tooltip-text" title="A small party that competes with us for left-wing votes, mostly as a spoiler risk rather than a mass alternative.">Green Party</span>!}: [+ green_relation : relationships +]
 
-{!<span class="tooltip-text" title="German Democratic Party">!}[? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]{!</span>!}: [+ ddp_relation : relationships +]
+{!<span class="tooltip-text" title="A minor right-leaning party that draws mostly from disaffected Republicans.">Libertarian Party</span>!}: [+ libertarian_relation : relationships +]
 
-{!<span class="tooltip-text" title="German People's Party">DVP</span>!}: [+ dvp_relation : relationships +]
+= The Republican Party
 
-{!<span class="tooltip-text" title="Communist Party of Germany">KPD</span>!}: [+ kpd_relation : relationships +]
+{!<span class="tooltip-text" title="The share of the Republican coalition currently aligned with Trumpism, as opposed to the traditional/establishment wing. This can be moved by improving relations with the establishment wing, or by Trumpist electoral defeats.">Trumpist (MAGA) share of the GOP</span>!}: [+ maga_share +]%
 
-{!<span class="tooltip-text" title="German National People's Party">DNVP</span>!}: [+ dnvp_relation : relationships +]
+Establishment share of the GOP: [+ gop_estab_share +]%
 
-{!<span class="tooltip-text" title="National-Socialist German Worker's Party (Nazis)">NSDAP</span>!}: [+ nsdap_relation : relationships +]
+{!<span class="tooltip-text" title="Trump's personal grip on the party, distinct from the size of the Trumpist wing as a whole.">Trump's personal dominance</span>!}: [+ trump_dominance +]%
 
-= Internal Factions of the SPD
+= Internal Factions of the Coalition
 
-{!<span class="tooltip-text" title="The Left is interested in radical, transformative policies and cooperation with the KPD.">Left</span>!} strength: [+ left_strength : strength +], dissent: [+ left_dissent : dissent +]
+{!<span class="tooltip-text" title="Democratic-socialist insurgents (DSA/Squad-aligned). Our home faction. Favors primarying unfriendly incumbents and building durable movement infrastructure alongside electoral work.">Insurgent</span>!} strength: [+ insurgent_strength : strength +], dissent: [+ insurgent_dissent : dissent +] [? if insurgent_split : (has split off as [+ insurgent_split_name +]) ?]
 
-{!<span class="tooltip-text" title="The Center is a faction of Center Marxists, between reform and revolution.">Center</span>!} strength: [+ center_strength : strength +], dissent: [+ center_dissent : dissent +]
+{!<span class="tooltip-text" title="Structural reformers in the Warren lane. Wants big legislative change through conventional means, wary of primarying friendly incumbents.">Progressive</span>!} strength: [+ progressive_strength : strength +], dissent: [+ progressive_dissent : dissent +] [? if progressive_split : (has split off as [+ progressive_split_name +]) ?]
 
-{!<span class="tooltip-text" title="Labor's goal is economic reform and benefits for organized workers.">Labor</span>!} strength: [+ labor_strength : strength +], dissent: [+ labor_dissent : dissent +]
+{!<span class="tooltip-text" title="Union-rooted, materially focused. Sometimes to the right of insurgents culturally, but firmly to the left economically.">Labor Left</span>!} strength: [+ labor_left_strength : strength +], dissent: [+ labor_left_dissent : dissent +] [? if labor_left_split : (has split off as [+ labor_left_split_name +]) ?]
 
-{!<span class="tooltip-text" title="Reformists are pragmatic participants in government, and seek to expand the welfare state and defend democracy.">Reformist</span>!} strength: [+ reformist_strength : strength +], dissent: [+ reformist_dissent : dissent +]
+{!<span class="tooltip-text" title="Coalition managers in the Obama/Biden lane. Cannot split off from the party - they define what 'the party as it is' means.">Establishment Democrat</span>!} strength: [+ establishment_dem_strength : strength +], dissent: [+ establishment_dem_dissent : dissent +]
 
-[? if neorevisionism > 0 : Neorevisionist strength: [+ neorevisionist_strength : strength +], dissent: [+ neorevisionist_dissent : dissent +] ?]
+{!<span class="tooltip-text" title="The right flank of the caucus, holding frontline swing districts. Constantly tempted to defect on votes that endanger their seats.">Blue Dog</span>!} strength: [+ blue_dog_strength : strength +], dissent: [+ blue_dog_dissent : dissent +] [? if blue_dog_split : (has split off as [+ blue_dog_split_name +]) ?]
 
 
-@paramilitaries
+@movement
 on-arrival: {!
-if (Q.rb_strength) {
-    Q.rb_strength_2 = Q.rb_strength.toFixed(1);
+if (Q.canvass_strength) {
+    Q.canvass_strength_2 = Q.canvass_strength.toFixed(1);
 }
-if (Q.rfb_strength) {
-    Q.rfb_strength_2 = Q.rfb_strength.toFixed(1);
-}
-if (Q.sh_strength) {
-    Q.sh_strength_2 = Q.sh_strength.toFixed(1);
-}
-if (Q.sa_strength) {
-    Q.sa_strength_2 = Q.sa_strength.toFixed(1);
+if (Q.online_right_strength) {
+    Q.online_right_strength_2 = Q.online_right_strength.toFixed(1);
 }
 !}
 
-= Paramilitaries
+= Movement Infrastructure
 
-{!<span class="tooltip-text" title="The Reichsbanner Schwarz-Rot-Gold is a popular organization for defending democracy, mostly affiliated with the SPD.">Reichsbanner</span>!} Strength: [+ rb_strength_2 +] thousand
+Not literal private armies, unlike the paramilitaries of Weimar Germany - this models organizing capacity and its dark mirror on the right. Militancy here means willingness to strike or disrupt (on the left) or willingness to escalate beyond normal politics (on the right), not routine street violence.
 
-Reichsbanner Militarization: [+ rb_militancy : militancy +]
+{!<span class="tooltip-text" title="DSA and allied labor organizing, canvassing, and mutual aid capacity.">Canvass Network</span>!} Strength: [+ canvass_strength_2 +] thousand active volunteers
 
-{!<span class="tooltip-text" title="The RFB (Rotfrontkämpferbund) is a communist group associated with the KPD.">RFB</span>!} Strength: [+ rfb_strength_2 +] thousand
+Canvass Network Militancy: [+ canvass_militancy : militancy +]
 
-RFB Militarization: [+ rfb_militancy : militancy +]
+{!<span class="tooltip-text" title="Online-to-street right-wing mobilization infrastructure.">Online Right</span>!} Strength: [+ online_right_strength_2 +] thousand active participants
 
-{!<span class="tooltip-text" title="The Stahlhelm is a right-wing organization of war veterans associated with the DNVP.">Stahlhelm</span>!} Strength: [+ sh_strength_2 +] thousand
+Online Right Militancy: [+ online_right_militancy : militancy +]
 
-Stahlhelm Militarization: [+ sh_militancy : militancy +]
+Union density: [+ union_density +]% of the workforce
 
-{!<span class="tooltip-text" title="The SA (Sturmabteilung) is the Nazi paramilitary.">SA</span>!} Strength: [+ sa_strength_2 +] thousand
+= Federal Institutions
 
-SA Militarization: [+ sa_militancy : militancy +]
+{!<span class="tooltip-text" title="Loyalty to the constitutional order and democratic norms, not to any one party.">Federal agencies loyalty</span>!}: [+ federal_agencies_loyalty : loyalty +]
 
-= Official military/paramilitaries
-
-Reichswehr: [+ reichswehr_strength +] thousand troops.
-
-Reichswehr Loyalty: [+ reichswehr_loyalty : loyalty +]
-
-Prussian police: [+ prussian_police_strength +] thousand members.
-
-Prussian police loyalty: [+ prussian_police_loyalty : loyalty +]
-
-[? if spd_in_government : Interior police loyalty: [+ interior_police_loyalty : loyalty +] ?]
+National Guard loyalty: [+ national_guard_loyalty : loyalty +]
 
 @polls
+# Always recompute vote share before displaying, rather than trusting that
+# some other scene already ran election_algorithm recently - this avoids a
+# real bug found in testing where the polls tab could show a stale or
+# all-zero result if nothing else had triggered the algorithm yet this game.
+set-jump: status.polls_display
+go-to: election_algorithm
+
+@polls_display
 on-arrival: {!
-Q.pro_republic_disp = Math.round(Q.pro_republic);
-Q.nationalism_disp = Math.round(Q.nationalism);
+Q.pro_democracy_disp = Math.round(Q.pro_democracy);
+Q.polarization_disp = Math.round(Q.polarization);
 Q.socialism_disp = Math.round(Q.socialism);
 !}
 
 = Projected election results
 
-(if the election were to be held now):
+(if the general election were held now):
 
-SPD: [+ spd_votes +]%
+Democratic: [+ dem_votes +]%
 
-[? if sapd_formed: SAPD: [+ sapd_votes +]% ?]
+Republican: [+ gop_votes +]%
 
-Z + BVP: [+ z_votes +]%
+Green: [+ green_votes +]%
 
-KPD: [+ kpd_votes +]%
-
-[? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ ddp_votes +]%
-
-DVP: [+ dvp_votes +]%
-
-DNVP: [+ dnvp_votes +]%
-
-NSDAP: [+ nsdap_votes +]%
+Libertarian: [+ libertarian_votes +]%
 
 Others: [+ other_votes +]%
 
 **Detailed results for each demographic**
 
-Workers: SPD: [+ workers_spd_display +]%, Z: [+ workers_z_display +]%, KPD: [+ workers_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ workers_ddp_display +]%, DVP: [+ workers_dvp_display +]%; DNVP: [+ workers_dnvp_display +]%, NSDAP: [+ workers_nsdap_display +]%, Others: [+ workers_other_display +]% [? if sapd_formed: SAPD: [+ workers_sapd_display +]% ?]
+Working class: Dem: [+ working_class_dem_display +]%, GOP: [+ working_class_gop_display +]%, Green: [+ working_class_green_display +]%, Libertarian: [+ working_class_libertarian_display +]%, Others: [+ working_class_other_display +]%
 
-New Middle Class: SPD: [+ new_middle_spd_display +]%, Z: [+ new_middle_z_display +]%, KPD: [+ new_middle_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ new_middle_ddp_display +]%, DVP: [+ new_middle_dvp_display +]%; DNVP: [+ new_middle_dnvp_display +]%, NSDAP: [+ new_middle_nsdap_display +]%, Others: [+ new_middle_other_display +]% [? if sapd_formed: SAPD: [+ new_middle_sapd_display +]% ?]
+College educated: Dem: [+ college_educated_dem_display +]%, GOP: [+ college_educated_gop_display +]%, Green: [+ college_educated_green_display +]%, Libertarian: [+ college_educated_libertarian_display +]%, Others: [+ college_educated_other_display +]%
 
-Old Middle Class: SPD: [+ old_middle_spd_display +]%, Z: [+ old_middle_z_display +]%, KPD: [+ old_middle_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ old_middle_ddp_display +]%, DVP: [+ old_middle_dvp_display +]%; DNVP: [+ old_middle_dnvp_display +]%, NSDAP: [+ old_middle_nsdap_display +]%, Others: [+ old_middle_other_display +]% [? if sapd_formed: SAPD: [+ old_middle_sapd_display +]% ?]
+Non-college white: Dem: [+ non_college_white_dem_display +]%, GOP: [+ non_college_white_gop_display +]%, Green: [+ non_college_white_green_display +]%, Libertarian: [+ non_college_white_libertarian_display +]%, Others: [+ non_college_white_other_display +]%
 
-Rural: SPD: [+ rural_spd_display +]%, Z: [+ rural_z_display +]%, KPD: [+ rural_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ rural_ddp_display +]%, DVP: [+ rural_dvp_display +]%; DNVP: [+ rural_dnvp_display +]%, NSDAP: [+ rural_nsdap_display +]%, Others: [+ rural_other_display +]% [? if sapd_formed: SAPD: [+ rural_sapd_display +]% ?]
+Black voters: Dem: [+ black_voters_dem_display +]%, GOP: [+ black_voters_gop_display +]%, Green: [+ black_voters_green_display +]%, Libertarian: [+ black_voters_libertarian_display +]%, Others: [+ black_voters_other_display +]%
 
-Unemployed: SPD: [+ unemployed_spd_display +]%, Z: [+ unemployed_z_display +]%, KPD: [+ unemployed_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ unemployed_ddp_display +]%, DVP: [+ unemployed_dvp_display +]%; DNVP: [+ unemployed_dnvp_display +]%, NSDAP: [+ unemployed_nsdap_display +]%, Others: [+ unemployed_other_display +]% [? if sapd_formed: SAPD: [+ unemployed_sapd_display +]% ?]
+Latino voters: Dem: [+ latino_voters_dem_display +]%, GOP: [+ latino_voters_gop_display +]%, Green: [+ latino_voters_green_display +]%, Libertarian: [+ latino_voters_libertarian_display +]%, Others: [+ latino_voters_other_display +]%
 
-Catholics: SPD: [+ catholics_spd_display +]%, Z: [+ catholics_z_display +]%, KPD: [+ catholics_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ catholics_ddp_display +]%, DVP: [+ catholics_dvp_display +]%; DNVP: [+ catholics_dnvp_display +]%, NSDAP: [+ catholics_nsdap_display +]%, Others: [+ catholics_other_display +]% [? if sapd_formed: SAPD: [+ catholics_sapd_display +]% ?]
+Suburban: Dem: [+ suburban_dem_display +]%, GOP: [+ suburban_gop_display +]%, Green: [+ suburban_green_display +]%, Libertarian: [+ suburban_libertarian_display +]%, Others: [+ suburban_other_display +]%
 
-Support for the Republic: [+ pro_republic_disp +]%
+Rural: Dem: [+ rural_dem_display +]%, GOP: [+ rural_gop_display +]%, Green: [+ rural_green_display +]%, Libertarian: [+ rural_libertarian_display +]%, Others: [+ rural_other_display +]%
+
+Support for democratic norms: [+ pro_democracy_disp +]%
+
+Polarization: [+ polarization_disp +]%
+
+Public sympathy for economic-left ideas: [+ socialism_disp +]%
+
+@primary_polls
+# Same fix as @polls above - always recompute before displaying.
+set-jump: status.primary_polls_display
+go-to: election_algorithm.primary_algorithm
+
+@primary_polls_display
+
+= Projected Democratic primary results
+
+(if the primary were held now):
+
+{!<span class="tooltip-text" title="Democratic-socialist insurgents (DSA/Squad-aligned).">DSA Left</span>!}: [+ primary_delegate_share_insurgent +]%
+
+{!<span class="tooltip-text" title="Structural reformers in the Warren lane.">Progressive</span>!}: [+ primary_delegate_share_progressive +]%
+
+{!<span class="tooltip-text" title="Union-rooted, materially focused.">Labor Left</span>!}: [+ primary_delegate_share_labor_left +]%
+
+{!<span class="tooltip-text" title="Coalition managers in the Obama/Biden lane.">Establishment Democrat</span>!}: [+ primary_delegate_share_establishment_dem +]%
+
+{!<span class="tooltip-text" title="The right flank of the caucus.">Blue Dog</span>!}: [+ primary_delegate_share_blue_dog +]%
+
+[? if insurgent_split or progressive_split or labor_left_split or blue_dog_split : Note: factions that have split off to run independently do not compete in this primary. ?]
