@@ -75,6 +75,11 @@ Q.labor_left_split = 0;
 Q.blue_dog_split = 0;
 // dissent threshold above which a split becomes a live risk each election cycle
 Q.split_dissent_threshold = 60;
+// which faction split off most recently, if any this session (used by
+// party_affairs/party_disunity.scene.dry's split-trigger logic)
+Q.faction_that_split = null;
+Q.faction_that_split_label = "";
+Q.split_announcement = "";
 // name of the breakaway party/organization once formed (set on split)
 Q.insurgent_split_name = "";
 Q.progressive_split_name = "";
@@ -83,6 +88,13 @@ Q.blue_dog_split_name = "";
 
 // have we discovered/formally adopted democratic-socialist ideology as a named program?
 Q.dem_soc_program = 0;
+
+// which faction's strategic approach are we currently emphasizing? (used by
+// party_affairs/strategic_emphasis.scene.dry, replaces the original's
+// single "ideology" variable)
+Q.strategic_emphasis = 0;
+Q.old_strategic_emphasis = 0;
+Q.emphasis_changed = 0;
 
 // crisis_urgency indicates how seriously the coalition is taking the economic crisis - 0 to 10.
 Q.crisis_urgency = 0;
@@ -371,6 +383,11 @@ Q.immigration_enforcement = 0; // relative to 2015 baseline, can go negative (le
 Q.education_policy = 0;
 Q.student_debt_relief = 0;
 
+// media strategy tracking (used by party_affairs/media.scene.dry)
+Q.commercialized_media = 0;
+Q.campaign_media = 0;
+Q.digital_media = 0;
+
 // tax rates relative to 2015 baseline
 Q.lower_tax_rates = 0;
 Q.upper_tax_rates = 0;
@@ -390,7 +407,7 @@ Q.establishment_primaried_insurgent = 0;
 // separately so they read as clearly invented people.
 // ==========================================================
 Q.n_advisors = 3;
-Q.timers = ['advisor_action', 'campaigning', 'ideology', 'fundraising',
+Q.timers = ['advisor_action', 'campaigning', 'strategic_emphasis', 'fundraising',
             'media', 'inter_faction_relations', 'international_relations',
             'mobilization_alliance', 'enemies', 'party_organizations',
             'rally', 'canvassing', 'shuffle_leadership', 'strike_wave',
@@ -405,13 +422,16 @@ Q.timers = ['advisor_action', 'campaigning', 'ideology', 'fundraising',
             'donor_strike', 'squad_under_fire'];
 Q.advisor_action_timer = 0;
 Q.campaigning_timer = 0;
-Q.ideology_timer = 0;
+Q.strategic_emphasis_timer = 0;
 Q.fundraising_timer = 0;
 Q.media_timer = 0;
 Q.inter_faction_relations_timer = 0;
 Q.international_relations_timer = 0;
 Q.mobilization_alliance_timer = 0;
 Q.enemies_timer = 0;
+// who we've chosen to frame as our chief rhetorical opponent (used by
+// party_affairs/enemies.scene.dry) - 0 until first chosen, then a string
+Q.enemies = 0;
 Q.party_organizations_timer = 0;
 Q.rally_timer = 0;
 Q.canvassing_timer = 0;
@@ -627,3 +647,4 @@ go-to: main if difficulty >= 0; main.main_easy if difficulty < 0
 It is the tenth year since the financial crisis, and the recovery has been long, uneven, and deeply unequal. A generation that came of age during the crash carries record student debt into a job market of stagnant wages. Something is stirring on the American left for the first time in decades: a small, once-dormant socialist organization is growing again, and an independent senator from Vermont is weighing a most unlikely campaign.
 
 Now, the task ahead is to turn this stirring into organized power - within a Democratic Party that does not yet know what has arrived at its door, and against a Republican Party where an insurgency of its own is about to erupt.
+
