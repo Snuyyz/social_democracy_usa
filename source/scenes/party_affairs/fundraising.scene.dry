@@ -9,9 +9,9 @@ tags: party_affairs
 
 = Fundraising
 
-For better or for worse, the party cannot exist without money.
+For better or for worse, the organization cannot exist without money. Unlike the establishment wing, we rely mostly on small-dollar donors and membership dues rather than large donors.
 
-- @maintain: Maintain our current dues.
+- @maintain: Maintain our current dues structure.
 - @reduce: Reduce dues.
 - @increase: Increase dues.
 
@@ -19,21 +19,20 @@ For better or for worse, the party cannot exist without money.
 subtitle: [+ dues +] resources gained.
 on-arrival: resources += dues;
 
-We maintain our current dues.
+We maintain our current dues structure.
 
 @reduce
 subtitle: [+ dues - 1 +] resources gained.
 choose-if: dues > 1
-on-arrival: dues -= 1; resources += dues; left_dissent -= 8; center_dissent -= 8; reformist_dissent -= 8; labor_dissent -= 8
+on-arrival: dues -= 1; resources += dues; insurgent_dissent -= 8; progressive_dissent -= 8; labor_left_dissent -= 8; blue_dog_dissent -= 8
 
-Our current members appreciate this, but no one decides to join a party because of the low dues.
+Our current members appreciate this, but no one joins because dues are low.
 
 @increase
-subtitle: [+ dues + 1 +] resources gained. [? if unemployed >= 15 : Given the present economic situation, this may be painful. ?][? if dues >= 4 : Dues are already rather high; increasing them might reduce our membership. ?]
-on-arrival: dues += 1; resources += dues; workers_spd -= 3; unemployed_spd -= 3; workers_spd -= 10 if unemployed >= 15; unemployed_spd -= 10 if unemployed >= 15; workers_spd -= 3*dues if dues >= 5; unemployed_spd -= 3*dues if dues >= 5
+subtitle: [+ dues + 1 +] resources gained. [? if unemployed >= 8 : Given the present economic situation, this may be painful. ?][? if dues >= 4 : Dues are already rather high; increasing them might reduce membership. ?]
+on-arrival: dues += 1; resources += dues; working_class_dem -= 3; working_class_dem -= 10 if unemployed >= 8; working_class_dem -= 3*dues if dues >= 5;
 view-if: dues <= 4
 
-Our members grumble at this, and some of the less committed members leave. But now, we have access to additional resources. 
+Our members grumble at this, and some of the less committed ones lapse. But now, we have access to additional resources.
 
-[? if unemployed >= 15 : Because of the presently high unemployment, our members are feeling the extra burden hard. ?]
-
+[? if unemployed >= 8 : Because of the presently elevated unemployment rate, our members are feeling the extra burden hard. ?]

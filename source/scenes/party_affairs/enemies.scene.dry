@@ -1,46 +1,48 @@
 title: Choosing Our Enemies
 new-page: true
-view-if: year <= 1930 and enemies_timer <= 0
+view-if: enemies_timer <= 0
 on-arrival: month_actions += 1; enemies_timer = 18
-max-visits: 3
+max-visits: 6
 is-card: true
 card-image: img/poster_1.png
 tags: party_affairs
 
-= Choosing our enemies
+= Choosing Our Enemies
 
-In our media and campaign materials, who should we consider as our main opponents?
+In our media and campaign materials, who should we treat as our main opponent?
 
-[? if enemies != 0 : Previously, we had considered the [+ enemies +] as our prior enemies. Is a change of direction necessary? ?]
+[? if enemies != 0 : Previously, we framed the [+ enemies +] as our chief opponent. Is a change of direction necessary? ?]
 
-- @anti_dem: The anti-democratic parties of the far right and left - the KPD, NSDAP, and DNVP.
-- @far_right: The far right - the NSDAP and DNVP.
-- @nsdap: The NSDAP alone.
-- @kpd: The KPD.
-- @bourgeois: The bourgeois parties - the Center and DVP.
+- @maga: Trumpism specifically - the authoritarian wing of the GOP.
+- @gop_broad: The Republican Party as a whole.
+- @establishment: The Democratic establishment itself, for failing to fight hard enough.
+- @greens: The Green Party, for splitting the coalition.
+- @corporate_power: Corporate power and big donors, regardless of party.
 - @easy_discard
 
-@anti_dem
-on-arrival: enemies = "anti-democratic parties"; center_strength += 5; reformist_strength += 5; left_dissent += 5; workers_kpd -= 2; workers_nsdap -= 2; workers_dnvp -= 2; kpd_relation -= 10
+@maga
+on-arrival: enemies = "Trumpist wing of the GOP"; progressive_strength += 5; establishment_dem_strength += 5; insurgent_dissent += 5; maga_share -= 0.3 if authoritarian_urgency >= 3;
 
-Attacking the far right and left is popular among all but the left wing of our party, who would prefer to be fighting the bourgeois parties. This might also hamper our ability to reconcile with the KPD in the future.
+Focusing our fire on Trumpism specifically is popular across most of the coalition, though the insurgent wing would rather be targeting corporate power and the establishment alike.
 
-@far_right
-on-arrival: enemies = "far right"; left_strength += 5; left_dissent -= 5; workers_nsdap -= 3; workers_dnvp -= 3;
+[? if authoritarian_urgency >= 3 : With authoritarian drift now a genuinely urgent concern, this framing lands with real force. ?]
 
-Attacking the far right is popular among the entire party, although the left considers the bourgeois parties to be just as dangerous, while the right is critical of our lack of response to the KPD. Our bourgeois coalition partners are also skeptical of our lack of commitment to anti-communism.
+@gop_broad
+on-arrival: enemies = "Republican Party"; insurgent_strength += 5; insurgent_dissent -= 5; gop_estab_relation -= 5; maga_share += 0.2;
 
-@nsdap
-on-arrival: enemies = "NSDAP"; neorevisionist_strength += 5; nazi_urgency += 1; workers_nsdap -= 4;
+Treating the whole GOP as the enemy is popular with the base, but makes it harder to peel off establishment-wing Republicans - if anything, it may push them closer to Trump out of tribal loyalty.
 
-[? if nazi_urgency == 0 or nsdap_r < 10 : The NSDAP is a tiny party right now, with more bark than bite. Many in our party are questioning our choices. ?][? if nazi_urgency > 0 and nsdap_r >= 10 : The Nazis are the most urgent problem for us to deal with. ?]
+@establishment
+on-arrival: enemies = "Democratic establishment"; insurgent_strength += 8; insurgent_dissent -= 5; establishment_dem_dissent += 10; establishment_dem_strength -= 3; blue_dog_dissent += 5;
 
-@kpd
-on-arrival: enemies = "KPD"; reformist_strength += 5; left_dissent += 8; reformist_dissent -= 5; kpd_relation -= 15; dvp_relation += 5; z_relation += 5; workers_kpd -= 4;
+Aiming our fire inward, at the party's own establishment wing, energizes the insurgent base but deeply alarms the establishment and blue-dog factions, who see it as attacking the coalition from within.
 
-Attacking the KPD is supported by all but the most left-wing socialists, and wins us some measure of approval among the bourgeois parties. However, If we are to reconcile with the KPD, this may not be the best choice.
+@greens
+on-arrival: enemies = "Green Party"; establishment_dem_strength += 5; green_relation -= 8; dirty_break_support -= 1;
 
-@bourgeois
-on-arrival: enemies = "bourgeois parties"; left_strength += 8; left_dissent -= 5; dvp_relation -= 5; z_relation -= 5; kpd_relation += 5; reformist_dissent += 8; workers_z -= 3; coalition_dissent += 1
+Blaming the Greens for splitting the left vote is popular with the establishment and progressive wings, but the insurgent wing tends to see this as scapegoating rather than addressing why some voters are drifting left of the party in the first place.
 
-Our anti-bourgeois rhetoric is popular among the left, but may make it harder to build the coalitions that are necessary for government in the future.
+@corporate_power
+on-arrival: enemies = "corporate power and big donors"; insurgent_strength += 6; labor_left_strength += 5; insurgent_dissent -= 6; labor_left_dissent -= 6; donor_strike_progress += 1;
+
+An anti-corporate message unites the insurgent and labor-left wings and plays well with the working-class base, but it makes the party's traditional donor network considerably more nervous.

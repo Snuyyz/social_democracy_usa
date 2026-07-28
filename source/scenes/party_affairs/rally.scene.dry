@@ -5,117 +5,115 @@ tags: party_affairs
 view-if: rally_timer <= 0
 on-arrival: month_actions += 1; rally_timer = 6
 card-image: img/protest.jpg
-go-to: main_rally; sa_disrupt if sa_strength > 180 and not sa_banned and not return_to_normalcy
+go-to: main_rally; online_right_disrupt if online_right_strength > 250 and not online_right_banned
 
-@sa_disrupt
+@online_right_disrupt
 
-The Nazi SA has disrupted our rally! Their street troops are preventing us from meeting.
+Online-right accounts have organized a coordinated harassment and disruption campaign against our event - doxxing organizers, flooding venue contact lines with threats, and, in some cases, mobilizing counter-protesters to show up in person.
 
-- @police_protect: Call the police to protect our rally.
-- @rb_protect: Use the Reichsbanner to protect our rally.
-- @both_protect: The police and Reichsbanner should work together to protect our rally.
-- @cancel: Cancel the rally.
+- @platform_response: Work with the venue and platforms to shut down the harassment campaign.
+- @canvass_protect: Mobilize the canvass network to provide in-person safety support.
+- @both_protect: Do both.
+- @cancel: Cancel the rally rather than risk it.
 
-@police_protect
-view-if: spd_prussia == 1
-on-arrival: police_protect_success = prussian_police_loyalty * prussian_police_militancy * prussian_police_strength*2 - sa_militancy*sa_strength;
-go-to: police_protect_win if police_protect_success >= 0; police_protect_lose if police_protect_success < 0
+@platform_response
+choose-if: federal_agencies_loyalty >= 0.5
+unavailable-subtitle: Without cooperative platforms or law enforcement, there isn't much leverage here.
+on-arrival: platform_success = federal_agencies_loyalty*2 - online_right_militancy*online_right_strength/100;
+go-to: platform_win if platform_success >= 0; platform_lose if platform_success < 0
 
-@police_protect_win
+@platform_win
 go-to: main_rally
 
-The police successfully protected our rally, so it can go ahead as usual.
+Platform moderation and a cooperative venue succeeded in getting ahead of the harassment campaign. The rally goes ahead as planned.
 
-@police_protect_lose
-on-arrival: strife += 1; workers_nsdap += 3
+@platform_lose
+on-arrival: constitutional_crisis_progress += 1; non_college_white_gop += 3;
 
-Unfortunately, the police were unable or unwilling to hold back the SA mob. The Nazis have won this show of strength.
+The harassment campaign overwhelmed the response. Several organizers report being doxxed, and turnout suffers.
 
-@rb_protect
-on-arrival: rb_success = rb_strength*rb_militancy - sa_strength*sa_militancy; strife += 1
-go-to: rb_protect_win if rb_success >= 0; rb_protect_lose if rb_success < 0
+@canvass_protect
+on-arrival: canvass_success = canvass_strength*canvass_militancy - online_right_strength*online_right_militancy/50;
+go-to: canvass_win if canvass_success >= 0; canvass_lose if canvass_success < 0
 
-@rb_protect_win
+@canvass_win
 go-to: main_rally
 
-The Reichsbanner has successfully protected our rally against the SA! Our meeting can go ahead as usual.
+Our own organizing infrastructure was enough to keep the event secure and on schedule.
 
-@rb_protect_lose
-on-arrival: workers_nsdap += 3; rb_strength -= 50
+@canvass_lose
+on-arrival: non_college_white_gop += 3; canvass_strength -= 2;
 
-Unfortunately, the Reichsbanner was not able to hold back the SA mob. The Nazis have won this show of strength.
+Despite our efforts, the disruption campaign takes a toll - a handful of volunteers say they don't want to do this again.
 
 @both_protect
-view-if: spd_prussia
-choose-if: prussian_police_training > 0
-unavailable-subtitle: The loyal sections of the police have never coordinated with the Reichsbanner before.
-on-arrival: rb_success = rb_strength*rb_militancy - sa_strength*sa_militancy + prussian_police_loyalty*prussian_police_militancy*prussian_police_strength*2; strife += 1
-go-to: both_protect_win if rb_success >= 0; both_protect_lose if rb_success < 0
+choose-if: federal_agencies_loyalty >= 0.5
+unavailable-subtitle: Without cooperative platforms or law enforcement, there isn't much added value here.
+on-arrival: combined_success = canvass_strength*canvass_militancy + federal_agencies_loyalty*2 - online_right_strength*online_right_militancy/50;
+go-to: both_win if combined_success >= 0; both_lose if combined_success < 0
 
-@both_protect_win
+@both_win
 go-to: main_rally
 
-The police and Reichsbanner have successfully protected our rally against the SA! Our meeting can go ahead as usual.
+Between platform cooperation and our own canvass network, the rally goes ahead safely and on schedule.
 
-@both_protect_lose
-on-arrival: workers_nsdap += 3; rb_strength -= 50
+@both_lose
+on-arrival: non_college_white_gop += 3; canvass_strength -= 2; constitutional_crisis_progress += 1;
 
-Unfortunately, the police and Reichsbanner were not able to hold back the SA mob. The Nazis have won this show of strength.
-
+Even with both responses, the disruption campaign does real damage - to the event, and to morale.
 
 @cancel
-on-arrival: workers_nsdap += 3;
+on-arrival: non_college_white_gop += 2;
 
-The SA have won this show of strength.
+We cancel rather than risk it. It feels like a small concession, but it is one.
 
 @main_rally
 
-Mass rallies are a common feature of social democratic life, especially in the lead-up to an election. What is the primary theme of this rally?
+Rallies and mass canvass launches remain a staple of movement politics, especially in the run-up to an election. What is the primary theme of this one?
 
-- @class_struggle: The class struggle of the proletariat against the bourgeoisie.
-- @welfare: Sozialpolitik - the maintenance and expansion of social welfare programs.
-- @democracy: Expanding our nascent democracy and defending it against dictatorship and fascism.
-- @pacifism: Opposing war, nationalism, and militarism at all costs.
-- @wtb: Support the WTB plan!
-- @local: A mixture of various local and national concerns that resonate most with the audience.
+- @class_struggle: Class struggle - organized labor and the working class against corporate power.
+- @welfare: Concrete material gains - healthcare, housing, and a jobs guarantee.
+- @democracy: Defending democracy against authoritarian drift.
+- @internationalism: Opposing endless war and a militarized foreign policy.
+- @jobs_program: Support the jobs guarantee!
+- @local: A mix of local and national concerns tailored to this audience.
 - @easy_discard
 
 @class_struggle
-on-arrival: workers_spd += 4*(1-dissent); unemployed_spd += 3*(1-dissent) if left_strength > reformist_strength; workers_spd += 4*(1-dissent) if nationalization_progress > 0; unemployed_spd += 3*(1-dissent) if nationalization_progress > 0; left_strength += 5; left_dissent -= 5; old_middle_spd -= 3; new_middle_spd -= 2;
+on-arrival: working_class_dem += 4*(1-dissent); non_college_white_dem += 3*(1-dissent) if insurgent_strength > establishment_dem_strength; working_class_dem += 4*(1-dissent) if public_ownership_adopted > 0; insurgent_strength += 5; insurgent_dissent -= 5; suburban_dem -= 3; college_educated_dem -= 2;
 
-Our message of class struggle appeals to the left wing of the working class, while potentially alienating the middle class. [? if nationalization_progress > 0 : Our achievements in nationalization have assisted our messaging. ?]
+Our message of class struggle appeals to the left wing of the working class, while potentially alienating some suburban and professional voters. [? if public_ownership_adopted > 0 : Our record on public ownership has assisted our messaging. ?]
 
 @welfare
-on-arrival: workers_spd += 3*(1-dissent); workers_spd += 3*(1-dissent) if welfare > 0; unemployed_spd += 3*(1-dissent) if welfare > 0; unemployed_spd += 4*(1-dissent) if welfare > 1; reformist_strength += 3; labor_strength += 4; reformist_dissent -= 3; labor_dissent -= 3;
+on-arrival: working_class_dem += 3*(1-dissent); working_class_dem += 3*(1-dissent) if healthcare_expansion > 0; working_class_dem += 4*(1-dissent) if healthcare_expansion > 1; establishment_dem_strength += 3; labor_left_strength += 4; establishment_dem_dissent -= 3; labor_left_dissent -= 3;
 
-The reformist message appeals to the organized workers, whose benefits are the accomplishments of social democracy. [? if welfare > 1 : Our achievements in expanding welfare have made this message more effective. ?]
+The material-gains message appeals broadly to working people whose lives have been touched by expanded benefits. [? if healthcare_expansion > 1 : Our record expanding healthcare has made this message land harder. ?]
 
 @democracy
-on-arrival: democratization += 1; pro_republic += 2*(1 - dissent); workers_spd += 4*(1-dissent) if democratization >= 3; unemployed_spd += 3*(1-dissent) if democratization >= 3; pro_republic += 4*(1 - dissent) if democratization >= 3; new_middle_spd += 4*(1-dissent) if democratization >= 3 
+on-arrival: authoritarian_urgency += 1; pro_democracy += 2*(1 - dissent); working_class_dem += 4*(1-dissent) if authoritarian_urgency >= 3; college_educated_dem += 4*(1-dissent) if authoritarian_urgency >= 3; pro_democracy += 4*(1-dissent) if authoritarian_urgency >= 3;
 
-Our speakers defend the republican system and rail against the monarchists and authoritarians who threaten it.
+Our speakers warn about the authoritarian drift of the opposition and the fragility of democratic norms.
 
-[? if democratization < 3 : Talk of democracy does not excite the workers as much as more practical issues. But that may change; part of our job is to provide political education to the proletariat. ?]
-[? if democratization >= 3 : Since we have consistently made democratization a theme of our campaign, the workers are enthusiastic about our message. ?]
+[? if authoritarian_urgency < 3 : Talk of abstract democratic norms does not move people as much as more immediate material concerns - yet. ?]
+[? if authoritarian_urgency >= 3 : Since we've consistently made this a theme, people are genuinely engaged by the message now. ?]
 
-@pacifism
-on-arrival: pacifism += 1; nationalism -= 2*(1 - dissent); workers_spd += 4*(1 - dissent) if pacifism >= 3; unemployed_spd += 3*(1-dissent) if pacifism >= 3; nationalism -= 3*(1-dissent) if pacifism >= 3; new_middle_spd += 4*(1-dissent) if pacifism >= 3
+@internationalism
+on-arrival: foreign_policy_restraint += 1; polarization -= 2*(1 - dissent); working_class_dem += 4*(1 - dissent) if foreign_policy_restraint >= 3; college_educated_dem += 3*(1-dissent) if foreign_policy_restraint >= 3;
 
-Our speakers denounce the military establishment and all the spending entering that black hole. Some adventurous speakers question the responsibility of the military elites in organizing the Great War.
+Our speakers denounce endless war and the outsized influence of the defense industry on foreign policy.
 
-[? if pacifism < 3 : Given the volume of nationalist indoctrination in our society, it is difficult to argue so vehemently against the military. ?]
-[? if pacifism >= 3 : Since we have consistently made pacifism a theme of our campaign, the workers are enthusiastic about our message. ?]
+[? if foreign_policy_restraint < 3 : Given the weight of conventional foreign-policy thinking, this argument is a hard sell so far. ?]
+[? if foreign_policy_restraint >= 3 : Since we've consistently made this a theme, our audience is genuinely receptive now. ?]
 
-@wtb
-view-if: wtb_adopted = 1
-choose-if: return_to_normalcy = 0
-unavailable-subtitle: The economic crisis is largely over now, and the public is no longer interested in hearing about it.
-on-arrival: wtb_support += 1; workers_spd += 6*(1-dissent); unemployed_spd += 6*(1-dissent); rural_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 3*(1-dissent);
+@jobs_program
+view-if: jobs_program_implemented = 1
+choose-if: crisis_urgency <= 5
+unavailable-subtitle: The economic crisis has largely passed, and the public is less interested in hearing about it now.
+on-arrival: jobs_program += 1; working_class_dem += 6*(1-dissent); rural_dem += 3*(1-dissent); suburban_dem += 3*(1-dissent); college_educated_dem += 3*(1-dissent);
 
-The WTB plan has become a popular rallying cry for our party. The workers are eager to go back to work, and that is exactly what the plan promises.
-
+The jobs guarantee has become a genuinely popular rallying point. People are eager to work, and that's exactly what the program promises.
 
 @local
-on-arrival: workers_spd += 3*(1-dissent); old_middle_spd += 1*(1-dissent); new_middle_spd += 2*(1-dissent); unemployed_spd += 3*(1-dissent);
+on-arrival: working_class_dem += 3*(1-dissent); rural_dem += 1*(1-dissent); suburban_dem += 2*(1-dissent); college_educated_dem += 2*(1-dissent);
 
-Our speakers have gauged the mood and are speaking to the issues that seem to most affect the workers in this moment.
+Our speakers have gauged the mood of this particular audience and are speaking directly to the issues on their minds.

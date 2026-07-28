@@ -1,101 +1,156 @@
 title: Party Disunity
 new-page: true
 is-card: true
-view-if: party_disunity_timer = 0 and (dissent >= 0.3 or (reformist_dissent > 30 and not reformists_resign) or (center_dissent > 30 and not centrists_resign) or (left_dissent > 30 and not sapd_formed) or (labor_dissent > 30 and not unions_independent) or (neorevisionist_dissent > 30 and neorevisionism))
+view-if: party_disunity_timer = 0 and (dissent >= 0.3 or insurgent_dissent > 30 or progressive_dissent > 30 or labor_left_dissent > 30 or blue_dog_dissent > 30)
 on-arrival: month_actions += 1; party_disunity_timer = 4
 card-image: img/Reichstagsfraktion_der_SPD.jpg
 frequency: 200
 tags: party_affairs
 
-# TODO: party dissent events for every faction, have a good image for this... 
-
 = Party Disunity
 
-The party is being torn apart by internal dissent. Upset at the leadership and general direction, factions have started sabotaging their rivals, hampering our efforts to win votes and carry out our policies.
+The coalition is being pulled apart by internal dissent. Frustrated with leadership and general direction, factions have started working against each other, hampering our ability to win elections and pass legislation.
 
-[? if reformist_dissent > 30 : The reformists are upset at our direction.  ?]
-[? if center_dissent > 30 : The centrists are displeased with the direction of our party. ?]
-[? if labor_dissent > 30 : The trade unions disagree with our present course of action. ?]
-[? if left_dissent > 30: Leftists are making noises about another party split. ?]
-[? if neorevisionist_dissent > 30 and neorevisionism = 1 : Neorevisionists are in disagreement about our political direction. ?]
+[? if insurgent_dissent > 30 and not insurgent_split : The insurgent wing is making real noise about running independently. ?]
+[? if progressive_dissent > 30 and not progressive_split : The progressive wing is deeply unhappy with our present direction. ?]
+[? if labor_left_dissent > 30 and not labor_left_split : Organized labor is losing patience with the coalition. ?]
+[? if blue_dog_dissent > 30 and not blue_dog_split : The blue-dog wing is questioning whether it's worth staying. ?]
 
-Something must be done to reinforce party unity.
+Something must be done to hold the coalition together - or a faction may decide it isn't worth staying.
 
 - @enforce_unity
-- @concessions_reformists
-- @concessions_center
-- @concessions_left
-- @concessions_labor
-- @concessions_neorevisionists
+- @concessions_insurgent
+- @concessions_progressive
+- @concessions_labor_left
+- @concessions_blue_dog
 - @do_nothing
 
 
 @enforce_unity
-title: Enforce party discipline.
-on-arrival: reformist_dissent -= 5; center_dissent -= 5; labor_dissent -= 5; left_dissent -= 5; neorevisionist_dissent -= 5; workers_spd -= 4; new_middle_spd -= 2; unemployed_spd -= 2
+title: Enforce coalition discipline.
+on-arrival: insurgent_dissent -= 5; progressive_dissent -= 5; labor_left_dissent -= 5; blue_dog_dissent -= 5; establishment_dem_dissent -= 5; working_class_dem -= 4; college_educated_dem -= 2; suburban_dem -= 2
+go-to: check_splits
 
-Enforcing party discipline reduces dissent, but it could lead to an exit of dissenting members.
+Enforcing coalition discipline reduces dissent across the board, but risks alienating members who feel unheard.
 
-# enforcing party discipline applies to all parties.
+@concessions_insurgent
+title: Give ground to the insurgent wing.
+view-if: insurgent_dissent > 30 and not insurgent_split
+on-arrival: insurgent_dissent -= 8; establishment_dem_dissent += 5; blue_dog_dissent += 3
+go-to: check_splits
 
-# each party has a concessions action and an expulsions action.
+We commit to giving the insurgent wing a real seat at the table. This may alienate the establishment and blue-dog wings, however.
 
-@concessions_reformists
-title: Give concessions to the reformists.
-view-if: reformist_dissent > 30
-on-arrival: reformist_dissent -= 7; left_dissent += 5
+@concessions_progressive
+title: Give ground to the progressive wing.
+view-if: progressive_dissent > 30 and not progressive_split
+on-arrival: progressive_dissent -= 8; establishment_dem_dissent += 3; blue_dog_dissent += 2
+go-to: check_splits
 
-We have promised to adopt a more reformist posture. This may alienate the left, however.
+We commit to taking more policy direction from the progressive wing. The establishment and blue-dog wings may be displeased.
 
-@concessions_center
-title: Give concessions to the centrists.
-view-if: center_dissent > 30
-on-arrival: center_dissent -= 7; reformist_dissent += 2; left_dissent += 2; neorevisionist_dissent += 2
+@concessions_labor_left
+title: Give ground to organized labor.
+view-if: labor_left_dissent > 30 and not labor_left_split
+on-arrival: labor_left_dissent -= 8; establishment_dem_dissent += 4
+go-to: check_splits
 
-We have promised to take more policy suggestions from the centrists. Both the left and reformist wings of the party might be displeased.
+Organized labor will be granted more influence over coalition strategy. This upsets the establishment wing, which would prefer to keep decision-making centralized.
 
-@concessions_left
-title: Give concessions to the left.
-view-if: left_dissent > 30
-on-arrival: left_dissent -= 7; reformist_dissent += 5
+@concessions_blue_dog
+title: Give ground to the blue-dog wing.
+view-if: blue_dog_dissent > 30 and not blue_dog_split
+on-arrival: blue_dog_dissent -= 8; insurgent_dissent += 6; progressive_dissent += 4
+go-to: check_splits
 
-We have promised that we will listen to the left wing of the party. Of course, this leads to increased dissent from the centrists.
-
-@concessions_labor
-title: Give concessions to labor.
-view-if: labor_dissent > 30
-on-arrival: labor_dissent -= 7; center_dissent += 5
-
-The trade unions will be granted more influence in party decision making. This upsets the centrists, who would prefer to centralize political decision making within the party.
-
-@concessions_neorevisionists
-title: Give concessions to the neorevisionists.
-view-if: neorevisionist_dissent > 30 and neorevisionism = 1
-on-arrival: neorevisionist_dissent -= 7; center_dissent += 5;
-
-Giving the neorevisionists more influence will cause increased dissent from the centrists.
-
+We commit to giving frontline members more room to break with the coalition on votes that threaten their seats. This infuriates the insurgent and progressive wings.
 
 @do_nothing
-title: Let the factions argue with themselves.
-on-arrival: labor_dissent += 1; left_dissent += 1; center_dissent += 1; reformist_dissent += 1
+title: Let the factions argue among themselves.
+on-arrival: insurgent_dissent += 1; progressive_dissent += 1; labor_left_dissent += 1; blue_dog_dissent += 1
+go-to: check_splits
 
-Let the factions bicker; perhaps dissent is healthy for the party.
+Let the factions bicker; perhaps a little internal argument is healthy. But left unaddressed for too long, it won't stay healthy.
 
-# TODO: should we be allowed to preemptively expel factions?
+@check_splits
+on-arrival: {!
+// ==========================================================
+// GENERALIZED FACTION-SPLIT TRIGGER
+// Any splittable faction (insurgent, progressive, labor_left, blue_dog -
+// everyone except establishment_dem, which defines "the party as it is")
+// can break off to run independently once its dissent has stayed above
+// split_dissent_threshold. This generalizes the original's single scripted
+// SPD/SAPD split into a repeatable system, per design decision.
+// ==========================================================
+Q.faction_that_split = null;
+for (var f of Q.splittable_factions) {
+    if (Q[f + '_split'] === 1) {
+        continue; // already split, nothing to do
+    }
+    if (Q[f + '_dissent'] > Q.split_dissent_threshold) {
+        Q.faction_that_split = f;
+        break; // only one faction can split per visit to this card
+    }
+}
+!}
+go-to: do_split if faction_that_split != null; no_split if faction_that_split == null
 
-@expel_reformists
-title: Expel the dissident reformists.
-view-if: reformist_dissent > 30
+@no_split
 
-@expel_left
-title: Expel the dissident leftists.
-view-if: left_dissent > 30
+For now, the coalition holds - barely.
 
-@expel_center
-title: Expel the centrists.
-view-if: center_dissent > 30
+@do_split
+on-arrival: {!
+var f = Q.faction_that_split;
+Q[f + '_split'] = 1;
 
-@expel_labor
-title: Expel the labor supporters.
-view-if: labor_dissent > 30
+// name the breakaway organization
+var splitNames = {
+    insurgent: "the Working Families Alliance",
+    progressive: "the Progressive Alliance",
+    labor_left: "the Labor Party",
+    blue_dog: "the New Democrats"
+};
+Q[f + '_split_name'] = splitNames[f] || (f + " (independent)");
+
+var factionLabels = {
+    insurgent: "The insurgent wing",
+    progressive: "The progressive wing",
+    labor_left: "The labor-left wing",
+    blue_dog: "The blue-dog wing"
+};
+Q.faction_that_split_label = factionLabels[f] || f;
+
+// add the breakaway as a new line in the general-election party list,
+// siphoning initial demographic support away from 'dem' proportional to
+// the splitting faction's overall strength relative to the coalition.
+var newParty = f + '_split_party';
+Q.parties.push(newParty);
+var shareOfCoalition = Q[f + '_strength'] / (Q.insurgent_strength + Q.progressive_strength + Q.labor_left_strength + Q.establishment_dem_strength + Q.blue_dog_strength);
+for (var c of Q.classes) {
+    var siphoned = Q[c + '_dem'] * shareOfCoalition * 0.6;
+    Q[c + '_dem'] -= siphoned;
+    Q[c + '_' + newParty] = siphoned;
+}
+
+// backfill historical records so charts don't break
+for (var record of Q.election_records) {
+    record[newParty] = 0;
+}
+for (var record of Q.party_support_records) {
+    record[newParty] = 0;
+}
+
+// the remaining coalition's dissent drops with the departure, but trust
+// is damaged
+Q[f + '_dissent'] = 0;
+Q.dissent += 0.05;
+Q.establishment_dem_dissent -= 5;
+Q.split_announcement = Q[f + '_split_name'];
+!}
+
+[+ faction_that_split_label +] has formally broken from the coalition, forming [+ split_announcement +] to run independently. They will no longer contest the Democratic primary, and will instead appear as their own line on the general election ballot.
+
+This is a serious blow to coalition unity, though it may also relieve some of the internal pressure that led here.
+
+- @return: Continue...

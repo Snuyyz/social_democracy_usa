@@ -1,7 +1,7 @@
 title: Campaigning
 new-page: true
 on-arrival: month_actions += 1
-max-visits: 36
+max-visits: 60
 is-card: true
 card-image: img/flags.jpg
 frequency: 100
@@ -9,62 +9,70 @@ tags: party_affairs
 
 = Campaigning
 
-Whether or not we are in an electoral campaign, the party is always trying to broaden its voter base. Who should we focus our campaign efforts on?
+Whether or not we are in the middle of an election, the coalition is always trying to broaden its voter base. Who should we focus our organizing efforts on?
 
-- @workers: The urban working class, our traditional support base.
-- @new_middle: The "new middle class" of government employees and white-collar workers.
-- @old_middle: The "old middle class" of small independent businessmen and artisans.
-- @rural: Rural workers and small farmers, who have felt neglected by us in the past.
-- @unemployed: The unemployed.
-- @catholics: Catholics, who typically support the Center Party.
+- @working_class: The working class, our traditional base.
+- @college_educated: College-educated professionals, an increasingly important part of the coalition.
+- @non_college_white: Non-college white voters, who have drifted away from us for decades.
+- @black_voters: Black voters, the most loyal part of the coalition.
+- @latino_voters: Latino voters, a growing and diverse part of the electorate.
+- @suburban: Suburban voters, up for grabs between both parties.
+- @rural: Rural voters, who have felt neglected by us in the past.
 - @root: We either don't want to or cannot campaign right now.
 - @easy_discard
 
-@workers
+@working_class
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: workers_spd += 6*(1-dissent); workers_spd -= 2 if unemployed >= 15; workers_spd -= 2 if unemployed >= 25; workers_spd += 6*(1-dissent) if wtb_adopted = 1; resources -= 1; workers_spd += 3*(1-dissent) if nationalization_progress >= 1;
+on-arrival: working_class_dem += 6*(1-dissent); working_class_dem -= 2 if unemployed >= 8; working_class_dem -= 2 if unemployed >= 12; working_class_dem += 6*(1-dissent) if jobs_program_implemented = 1; working_class_dem += 3*(1-dissent) if labor_law_reform >= 1; resources -= 1;
 
-We have increased our campaigning among the workers. [? if unemployed >= 15: The high levels of unemployment make our campaign more difficult. ?][? if wtb_adopted = 1 : Adopting the WTB plan gives us a new rallying point around which to attract workers. ?]
+We have increased our organizing among the working class. [? if unemployed >= 8: The elevated unemployment rate makes our campaign more difficult. ?][? if jobs_program_implemented = 1 : A federal jobs guarantee gives us a powerful, concrete rallying point. ?][? if labor_law_reform >= 1 : Our record on labor law makes this pitch land harder. ?]
 
-@new_middle
+@college_educated
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: new_middle_spd += 6*(1-dissent); new_middle_spd -= 4 if socialism <= 49 and peoples_party == 0; resources -= 1; peoples_party_support += 1;
+on-arrival: college_educated_dem += 6*(1-dissent); college_educated_dem -= 3 if socialism <= 25 and dem_soc_program == 0; resources -= 1; college_educated_dem += 3*(1-dissent) if climate_policy >= 1;
 
-We have increased our campaigning among the new middle class. [? if socialism <= 49 and peoples_party == 0: The popular antipathy towards socialism among this group makes our campaign more difficult. ?] [? if peoples_party > 0: As a people's party, we have an easier time increasing support among the middle class than before. ?]
+We have increased our organizing among college-educated professionals. [? if socialism <= 25 and dem_soc_program == 0 : Without a clearly articulated program, some in this group remain wary of anything that sounds too radical. ?][? if climate_policy >= 1 : Our record on climate makes this pitch land harder with this group. ?]
 
-@old_middle
+@non_college_white
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: old_middle_spd += 5*(1-dissent); resources -= 1; old_middle_spd -= 3 if nationalism >= 51 and peoples_party == 0; peoples_party_support += 1
+on-arrival: non_college_white_dem += 5*(1-dissent); non_college_white_dem -= 3*(1-dissent) if polarization >= 60; resources -= 1; non_college_white_dem += 3*(1-dissent) if working_class_qol >= 105;
 
-We have increased our campaigning among the old middle class. [? if nationalism >= 51 and peoples_party == 0: The high levels of nationalism among this group make our campaign more difficult. ?] [? if peoples_party > 0: As a people's party, we have an easier time increasing support among the middle class than before. ?]
+We have increased our organizing among non-college white voters. [? if polarization >= 60 : High levels of national polarization make this pitch harder - many in this group have sorted firmly into the other coalition. ?][? if working_class_qol >= 105 : Visible material gains for working people help cut through the noise here. ?]
+
+@black_voters
+subtitle: -1 resources
+choose-if: resources >= 1
+unavailable-subtitle: Not enough resources.
+on-arrival: black_voters_dem += 4*(1-dissent); resources -= 1; black_voters_dem -= 3 if voting_rights_reform < 0; black_voters_dem += 4*(1-dissent) if voting_rights_reform >= 1;
+
+We have increased our organizing among Black voters, already the most loyal part of the coalition. [? if voting_rights_reform < 0 : Rollbacks to voting rights protections have made turnout organizing more difficult. ?][? if voting_rights_reform >= 1 : Our record defending voting rights makes this pitch land harder. ?]
+
+@latino_voters
+subtitle: -1 resources
+choose-if: resources >= 1
+unavailable-subtitle: Not enough resources.
+on-arrival: latino_voters_dem += 5*(1-dissent); resources -= 1; latino_voters_dem -= 4*(1-dissent) if immigration_enforcement >= 2; latino_voters_dem += 4*(1-dissent) if immigration_reform >= 1;
+
+We have increased our organizing among Latino voters. [? if immigration_enforcement >= 2 : Aggressive immigration enforcement under the current administration makes this pitch more difficult. ?][? if immigration_reform >= 1 : Our record on immigration reform makes this pitch land harder. ?]
+
+@suburban
+subtitle: -1 resources
+choose-if: resources >= 1
+unavailable-subtitle: Not enough resources.
+on-arrival: suburban_dem += 5*(1-dissent); suburban_dem -= 3*(1-dissent) if dem_soc_program == 1 and radicalization >= 6; resources -= 1;
+
+We have increased our organizing among suburban voters. [? if dem_soc_program == 1 and radicalization >= 6 : Some in this group are wary of the coalition's more radical rhetoric, which makes this pitch more difficult. ?]
 
 @rural
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: rural_spd += 5*(1-dissent); rural_spd -= 3*(1-dissent) if peoples_party == 0; resources -= 1; peoples_party_support += 1; rural_spd += 3*(1-dissent) if rural_policy >= 2
+on-arrival: rural_dem += 5*(1-dissent); rural_dem -= 3*(1-dissent) if dem_soc_program == 0; resources -= 1; rural_dem += 3*(1-dissent) if jobs_program_implemented = 1;
 
-We have increased our campaigning among farmers. [? if peoples_party == 0: We have not historically campaigned much among the farmers, and they do not trust us. ?][? if peoples_party > 0: As a people's party, we have an easier time increasing support among farmers than before. ?][? if rural_policy >= 2 : Our rural policies have made it easier for us to build support among farmers. ?]
-
-@unemployed
-subtitle: -1 resources
-choose-if: resources >= 1
-unavailable-subtitle: Not enough resources.
-on-arrival: unemployed_spd += 6*(1-dissent); resources -= 1; unemployed_spd -= 3 if welfare < 0; unemployed_spd += 6*(1-dissent) if wtb_adopted = 1; unemployed_spd += 3*(1-dissent) if welfare >= 2;
-
-We have increased our campaigning among the unemployed. [? if welfare < 0: The welfare cuts and resultant poverty make our campaign more difficult, since we are associated with the government that enacted these cuts, and our campaign may even backfire. ?][? if wtb_adopted = 1 : Adopting the WTB plan gives us a new rallying point around which to attract support from the unemployed. ?]
-
-@catholics
-subtitle: -1 resources
-choose-if: resources >= 1
-unavailable-subtitle: Not enough resources.
-view-if: peoples_party == 1
-on-arrival: catholics_spd += 6*(1-dissent); resources -= 1
-
-We have increased our campaigning among Catholics.
+We have increased our organizing among rural voters. [? if dem_soc_program == 0 : We have not historically campaigned much in rural areas, and trust here is low. ?][? if jobs_program_implemented = 1 : A federal jobs guarantee is a message that lands well in rural communities hit hard by deindustrialization. ?]

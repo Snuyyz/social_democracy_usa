@@ -1,120 +1,78 @@
 title: Inter-Party Relationships
 new-page: true
-view-if: year <= 1932 and inter_party_relationships_timer <= 0
+view-if: inter_party_relationships_timer <= 0
 tags: party_affairs
 is-card: true
 on-arrival: month_actions += 1; inter_party_relationships_timer = 6;
 card-image: img/weimar_coalition_2.jpg
-max-visits: 12
-#subtitle: Building relations with the other political parties of Germany.
+max-visits: 24
 
 = Inter-Party Relationships
 
-The SPD cannot govern by itself yet. Because we do not have an electoral majority, we need the support of other parties. Recently, our governments have consisted of the Weimar Coalition of the SPD, Center, and Democratic parties. We can reach out and build additional connections with these parties, or perhaps we can stand alone.
+Our coalition does not exist in isolation. There are other political forces in the country - some worth trying to work with, others worth trying to peel apart.
 
-- @liberals: Strengthen our bonds with the left-liberal German Democratic Party and conservative-liberal German People's Party.
-- @center: Strengthen our bonds with the Catholic Center Party.
-- @kpd: Work towards repairing relationships with the Communist Party.
-- @spd_alone: The SPD can stand alone for now.
+- @gop_establishment: Reach out to the traditional, establishment wing of the Republican Party.
+- @greens: Build relations with the Green Party.
+- @libertarians: Build relations with the Libertarian Party.
+- @stand_alone: Focus entirely on our own coalition for now.
 - @easy_discard
 
-
-@kpd
+@gop_establishment
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: resources -= 1; kpd_inter_party_seen += 1
-go-to: kpd_blutmai if blutmai = 1; kpd_1 if blutmai = 0 and kpd_coalition_success = 0 and (kpd_relation < 40 or kpd_rectified_history = 1); kpd_rectification_of_history if kpd_relation >= 40 and kpd_rectified_history = 0; kpd_2 if kpd_coalition_success = 1 and kpd_rectified_history = 1
+on-arrival: resources -= 1;
+go-to: gop_estab_trump_dominant if trump_dominance >= 60; gop_estab_contested if trump_dominance >= 30 and trump_dominance < 60; gop_estab_open if trump_dominance < 30
 
-@kpd_1
-on-arrival: kpd_relation += 6*(1 - dissent); communist_coalition += 1 if kpd_inter_party_seen <= 1; reformist_dissent += 2; z_relation -= 2; dvp_relation -= 3
+@gop_estab_trump_dominant
+on-arrival: gop_estab_relation += 3*(1-dissent); maga_share += 0.3; gop_estab_share -= 0.3;
 
-The communists are suspicious of our overtures, especially the Stalinist leadership, who persist in calling us "social fascists". However, connections are made at the grassroots and local levels.
+Trump's personal grip on the party is near-total. Establishment-wing Republicans who might otherwise be open to working with us are wary of being seen as disloyal, and few are willing to be publicly associated with us. Still, quiet channels remain open.
 
-@kpd_rectification_of_history
+[? if gop_estab_relation >= 55 : Some of these establishment figures privately welcome our overtures, even if they can't say so on the record. ?]
 
-One stumbling block for our relations with the KPD is our history of conflict, dating back to 1918 and 1919. The KPD is especially contemptuous of Gustav Noske, the SPD "bloodhound" who reportedly ordered the violent suppression of the Spartacist uprising and other KPD revolts. They also blame us for the deaths of Rosa Luxemburg and Karl Liebknecht, two SPD-turned-KPD leaders who were killed during the suppression of the uprising.
+@gop_estab_contested
+on-arrival: gop_estab_relation += 6*(1-dissent); maga_share -= 0.5; gop_estab_share += 0.5;
 
-For further improvements in KPD relations, it might be necessary to expel Noske, and hold some sort of commemoration for Luxemburg and Liebknecht.
+The party's establishment wing is locked in a real internal fight over its own direction. Our outreach - focused on shared institutional concerns rather than ideology - gives wavering establishment figures a reason to draw a sharper line against the party's Trumpist wing.
 
-- @yes_history: Yes, we must apologize for our past actions.
-- @no_history: No, we have no need to apologize.
+[? if gop_estab_relation >= 55 : These relationships are paying real dividends: several establishment-aligned members have begun distancing themselves from Trump more openly. ?]
 
-@yes_history
-on-arrival: reformist_dissent += 12; reformist_strength -= 2; neorevisionist_dissent += 5; left_dissent -= 6; left_strength += 5; kpd_rectified_history = 1; z_relation -= 6; dvp_relation -= 6; ddp_relation -= 4; kpd_relation += 8*(1-dissent); coalition_dissent += 1
+@gop_estab_open
+on-arrival: gop_estab_relation += 8*(1-dissent); maga_share -= 0.8; gop_estab_share += 0.8; establishment_dem_dissent -= 2;
 
-As part of normalizing relations with the KPD, we have to acknowledge the wrongdoings of our past. We have expelled Noske, and have held public commemorations for those killed by troops during the uprisings.
+With the party's establishment wing back in a position of real strength, there is a genuine opening for cross-partisan cooperation on institutional questions - defending the courts, election administration, and other guardrails - even as we remain adversaries on nearly everything else.
 
-This leads to tensions with the moderates and reformists within our party, and criticism from the conservative and liberal parties.
+[? if gop_estab_relation >= 65 : This cooperation has become durable enough that some in our own coalition are starting to ask what we're getting out of it. ?]
 
-@no_history
-on-arrival: kpd_relation -= 3
-
-We have no need to apologize for the actions of Ebert and Noske; it is the Communists' fault for launching a violent insurrection.
-
-
-@kpd_2
-on-arrival: kpd_relation += 8*(1 - dissent); communist_coalition += 1 if kpd_inter_party_seen <= 1; reformist_dissent += 2; z_relation -= 3; dvp_relation -= 3
-
-After the success of the coalition government with the KPD, they are much more amenable to us.
-
-@kpd_blutmai
-on-arrival: kpd_relation += 3*(1 - dissent); reformist_dissent += 1
-
-After the events of Blütmai, reconciling with the Communists is difficult, if not impossible. Nevertheless, we must try.
-
-@center
+@greens
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: resources -= 1; z_relation += 2 if z_party_leader == "Joos"
-go-to: center_op if z_in_government = 1 and spd_in_government = 0 and chancellor != "Brüning"; center_coalition if spd_in_government = 1 and z_in_government = 1; center_bruning if chancellor = "Brüning"
+on-arrival: resources -= 1; green_relation += 6*(1-dissent);
+go-to: greens_spoiler if working_class_green + college_educated_green >= 6; greens_marginal if working_class_green + college_educated_green < 6
 
-@center_op
-on-arrival: z_relation += 5*(1 - dissent)
+@greens_spoiler
+on-arrival: dirty_break_support += 1 if green_relation >= 50;
 
-We are currently in opposition to the Center-led government, but that does not preclude the general building of feelings of good will.
+The Green Party draws real votes from our left flank in close races, and building relations with them is as much about damage control and coordination as it is about genuine alliance. Some in our insurgent wing wonder aloud whether they should simply be running as Greens instead.
 
-@center_coalition
-on-arrival: z_relation += 8*(1 - dissent)
+@greens_marginal
 
-We are currently coalition partners with them, so improving relations comes naturally.
+Relations with the Green Party remain cordial but low-stakes for now - they poll too marginally to be a serious electoral factor either way.
 
-@center_bruning
-on-arrival: z_relation += 5*(1 - dissent)
-
-The Brüning semi-autocratic regime makes building friendly relations difficult, but not impossible.
-
-@liberals
+@libertarians
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-on-arrival: resources -= 1; ddp_relation += 5*(1 - dissent)
-go-to: dvp_stresemann if stresemann_dead = 0; dvp_loss if stresemann_dead = 1 and year <= 1930; dvp_moribund if year > 1930
+on-arrival: resources -= 1; libertarian_relation += 6*(1-dissent); maga_share -= 0.2 if libertarian_relation >= 45;
 
-The [+ ddp_name +] has been one of our closest allies through the course of the Republic.
+The Libertarian Party draws mostly from disaffected Republicans uncomfortable with Trumpism's authoritarian drift, and there is occasional common ground on civil liberties and criminal justice reform, even as we disagree on almost everything about political economy.
 
-@dvp_stresemann
-on-arrival: dvp_relation += 8*(1 - dissent)
+[? if libertarian_relation >= 45 : A meaningful bloc of libertarian-leaning voters are now genuinely up for grabs, uncomfortable with where the GOP has gone. ?]
 
-Gustav Stresemann, the leader of the DVP is the best foreign policy leaders of the republic, and while he has previously expressed monarchist tendencies, he has been friendly towards us.
+@stand_alone
 
-@dvp_loss
-on-arrival: dvp_relation += 5*(1 - dissent)
-
-With the death of Gustav Stresemann, the DVP is much less likely to be accommodating of us. In addition, the liberal parties are electorally in decline, so perhaps our efforts are best spent elsewhere.
-
-However, given the influence of the DVP among the other right-leaning parties [? if president == "Hindenburg": and with President Hindenburg ?], it can still be helpful to influence them.
-
-@dvp_moribund
-on-arrival: dvp_relation += 5*(1 - dissent)
-
-The liberal parties (both the [+ ddp_name +] and DVP) are electorally moribund, so perhaps our efforts are best spent elsewhere.
-
-However, given the influence of the DVP among the other right-leaning parties[? if president == "Hindenburg": and with President Hindenburg ?], it can still be helpful to influence them.
-
-@spd_alone
-
-Whether it is because we *cannot* or *will not*, we do not make ties with other parties at this moment.
+We focus entirely on building our own coalition for now, rather than reaching outward.
 
 - @return: Continue...

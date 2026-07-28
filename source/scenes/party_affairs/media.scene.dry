@@ -5,78 +5,77 @@ tags: party_affairs
 view-if: media_timer <= 0
 on-arrival: month_actions += 1; media_timer += 6;
 card-image: img/sangerbund.jpg
-#subtitle: Setting the direction for our newspapers and radio.
 
 = Media
 
-The SPD runs a veritable media empire, with many newspapers throughout every German city and region. We could use the media for various purposes...
+Between sympathetic outlets, independent media, and our own social media presence, the coalition has real reach. How should we use it?
 
 - @commercial
 - @campaign
 - @ideological
-- @radio
-- @radio_2
-- @radio_3
-- @radio_4
+- @digital
+- @digital_2
+- @digital_3
+- @digital_4
 - @return: We should not do anything with media at the moment.
 - @easy_discard
 - @cancel_advisor_action
 
 @commercial
-title: Make our newspapers more commercialized by broadening their appeal beyond party supporters.
-subtitle: This might upset ideological purists, but it may bring in more funds and perhaps expose the middle class to socialist views.
-on-arrival: resources += 1; commercialized_media += 1; new_middle_spd += 4*(1 - dissent); old_middle_spd += 3*(1-dissent); left_dissent += 10; labor_dissent += 10
+title: Broaden the appeal of our media beyond committed supporters.
+subtitle: This might upset ideological purists, but it may bring in more funds and reach beyond our existing base.
+on-arrival: resources += 1; commercialized_media += 1; suburban_dem += 4*(1 - dissent); college_educated_dem += 3*(1-dissent); insurgent_dissent += 10; labor_left_dissent += 10
 
-Our commercialized newspapers are able to bring in more funds. However, the left and labor factions express their displeasure.
+Our broader-appeal media brings in more funding. However, the insurgent and labor-left wings express real displeasure at the softened messaging.
 
 @campaign
-title: The purpose of our media is to elect more Social Democrats.
-subtitle: Our newspapers will focus on the electoral campaign.
-on-arrival: campaign_media += 1; workers_spd += 4*(1 - dissent); unemployed_spd += 2*(1-dissent);
+title: The purpose of our media is to win elections.
+subtitle: Our media will focus squarely on the electoral campaign.
+on-arrival: campaign_media += 1; working_class_dem += 4*(1 - dissent); black_voters_dem += 2*(1-dissent);
 
-Our campaign media is mostly reaching the workers who are already saturated with Socialist propaganda, but it must be doing *something*, or at least that is what we hope.
+Our campaign media is mostly reaching people already receptive to us, but it must be doing *something*, or at least that's what we tell ourselves.
 
 @ideological
-title: We will have vibrant ideological debate within our newspapers.
-subtitle: There will be space for all factions to air their views.
-on-arrival: left_dissent -= 6; labor_dissent -= 6; center_dissent -= 6; reformist_dissent -= 6; neorevisionist_dissent -= 6
+title: We will have vibrant ideological debate across our media ecosystem.
+subtitle: There will be space for every faction to air its views.
+on-arrival: insurgent_dissent -= 6; labor_left_dissent -= 6; progressive_dissent -= 6; establishment_dem_dissent -= 6; blue_dog_dissent -= 6
 
-This has been our media course historically, and it has successfully paved over the many tensions in our party.
+This has been our media course so far, and it has mostly paved over the tensions within the coalition.
 
-@radio
-title: Why not fund a radio station?
+@digital
+title: Invest seriously in our own digital media operation.
 subtitle: -2 resources
 choose-if: resources >= 2
 unavailable-subtitle: Not enough resources.
-view-if: radio = 0
-on-arrival: radio += 1; resources -= 2; new_middle_spd += 4*(1 - dissent); old_middle_spd += 3*(1 - dissent); workers_spd += 2*(1 - dissent); labor_dissent += 5; socialism += 3*(1 - dissent); nationalism -= 3*(1 - dissent) if pacifism > 1; pro_republic += 3*(1-dissent) if democratization > 1
+view-if: digital_media = 0
+on-arrival: digital_media += 1; resources -= 2; college_educated_dem += 4*(1 - dissent); suburban_dem += 3*(1 - dissent); working_class_dem += 2*(1 - dissent); labor_left_dissent += 5; socialism += 3*(1 - dissent); polarization -= 3*(1 - dissent) if foreign_policy_restraint > 1; pro_democracy += 3*(1-dissent) if authoritarian_urgency > 1
 
-Our new radio station allows us to connect to people in a more intimate setting than before, spreading the message of socialism along with music and other popular content. Since most proletarians cannot afford family radios right now, we are reaching the middle class, a fact of which our labor comrades are painfully aware.
+Our new digital media operation - video, podcasts, and organized social media presence - lets us reach people in a more direct and personal way than earned press coverage ever did. It skews younger and more online, a fact our labor-left comrades are painfully aware of.
 
-@radio_2
-title: We must keep on building up our radio network.
+@digital_2
+title: We should keep building out our digital media operation.
 subtitle: -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-view-if: radio > 0 and radio <= 3
-on-arrival: radio += 1; resources -= 1; new_middle_spd += 5*(1 - dissent); old_middle_spd += 3*(1 - dissent); workers_spd += 3*(1 - dissent); socialism += 3*(1 - dissent); nationalism -= 3*(1 - dissent)*(pacifism-2) if pacifism > 2; pro_republic += 3*(1-dissent)*(democratization-2) if democratization > 2
+view-if: digital_media > 0 and digital_media <= 3
+on-arrival: digital_media += 1; resources -= 1; college_educated_dem += 5*(1 - dissent); suburban_dem += 3*(1 - dissent); working_class_dem += 3*(1 - dissent); socialism += 3*(1 - dissent); polarization -= 3*(1 - dissent)*(foreign_policy_restraint-2) if foreign_policy_restraint > 2; pro_democracy += 3*(1-dissent)*(authoritarian_urgency-2) if authoritarian_urgency > 2
 
-Our new radio network has a mix of popular and political programming, and is proving a success.
+Our digital operation has a real mix of political content and genuine cultural reach, and it's working.
 
-@radio_3
-title: We must keep on building up our radio network.
-subtitle: It is now financially self-sufficient, and does not require any more resources.
-view-if: radio > 3 and radio <= 5 and year <= 1931
-on-arrival: radio += 1; new_middle_spd += 5*(1 - dissent); old_middle_spd += 4*(1 - dissent); workers_spd += 4*(1 - dissent); rural_spd += 3*(1 - dissent); unemployed_spd += 2*(1-dissent); socialism += 3*(1 - dissent); nationalism -= 3*(1 - dissent)*(pacifism-2) if pacifism > 2; pro_republic += 3*(1-dissent)*(democratization-2) if democratization > 2
+@digital_3
+title: We should keep building out our digital media operation.
+subtitle: It's now largely self-sustaining and doesn't require more resources.
+view-if: digital_media > 3 and digital_media <= 5
+on-arrival: digital_media += 1; college_educated_dem += 5*(1 - dissent); suburban_dem += 4*(1 - dissent); working_class_dem += 4*(1 - dissent); rural_dem += 3*(1 - dissent); latino_voters_dem += 2*(1-dissent); socialism += 3*(1 - dissent); polarization -= 3*(1 - dissent)*(foreign_policy_restraint-2) if foreign_policy_restraint > 2; pro_democracy += 3*(1-dissent)*(authoritarian_urgency-2) if authoritarian_urgency > 2
 
-Our radio network has become a successful tool for spreading our message.
+Our media operation has become a genuinely effective tool for spreading our message.
 
-@radio_4
-title: We should keep on supporting our radio network.
-subtitle: As radio becomes more common, the novelty is beginning to wear off, and radio is becoming saturated in society. -1 resources
+@digital_4
+title: We should keep supporting our digital operation.
+subtitle: As the online landscape gets more crowded, the novelty is wearing off. -1 resources
 choose-if: resources >= 1
 unavailable-subtitle: Not enough resources.
-view-if: radio > 3 and (radio >= 6 or year >= 1932) and radio <= 9
-on-arrival: radio += 1; resources -= 1; new_middle_spd += 3*(1 - dissent); old_middle_spd += 2*(1 - dissent); workers_spd += 3*(1 - dissent); rural_spd += 2*(1 - dissent); unemployed_spd += 2*(1-dissent); socialism += 2*(1 - dissent); nationalism -= 2*(1 - dissent)*(pacifism-2) if pacifism > 2; pro_republic += 2*(1-dissent)*(democratization-2) if democratization > 2
+view-if: digital_media > 3 and digital_media >= 6 and digital_media <= 9
+on-arrival: digital_media += 1; resources -= 1; college_educated_dem += 3*(1 - dissent); suburban_dem += 2*(1 - dissent); working_class_dem += 3*(1 - dissent); rural_dem += 2*(1 - dissent); latino_voters_dem += 2*(1-dissent); socialism += 2*(1 - dissent); polarization -= 2*(1 - dissent)*(foreign_policy_restraint-2) if foreign_policy_restraint > 2; pro_democracy += 2*(1-dissent)*(authoritarian_urgency-2) if authoritarian_urgency > 2
 
-We are continuing to invest in our radio stations. Both commercial and political radio are becoming more prevalent, making it harder to spread our message amidst the competition.
+We keep investing, but the online landscape is more saturated and more contested than ever, making it harder to break through the noise.

@@ -1,0 +1,69 @@
+title: Questions of Strategy
+new-page: true
+is-card: true
+tags: party_affairs
+view-if: strategic_emphasis_timer <= 0
+on-arrival: month_actions += 1; old_strategic_emphasis = strategic_emphasis; strategic_emphasis_timer = 18
+card-image: img/arbeiterbew.jpg
+max-visits: 6
+
+= Questions of Strategy
+
+The coalition is pulled between different strategic instincts. What should be the primary emphasis of our approach right now?
+
+[? if strategic_emphasis != 0 : We have previously emphasized a [+ strategic_emphasis +] approach. Changing course now will likely have drawbacks. ?]
+
+- @insurgent_approach: Primary unfriendly incumbents and build independent movement infrastructure - the party should fear us.
+- @progressive_approach: Win the argument and legislate structural change through the party as it exists.
+- @labor_approach: Work through organized labor to win material gains for working people.
+- @establishment_approach: Hold the coalition together and win elections first; ideology second.
+- @easy_discard
+
+@insurgent_approach
+on-arrival: {!
+if (Q.strategic_emphasis && Q.strategic_emphasis != "insurgent") {
+    Q.emphasis_changed = 1;
+}
+!}
+go-to: emphasis_changed if emphasis_changed = 1
+on-departure: strategic_emphasis = "insurgent"; insurgent_strength += 10; dirty_break_support += 1; insurgent_dissent -= 5; establishment_dem_dissent += 3; gop_estab_relation -= 3;
+
+The insurgent wing pushes a course of primary challenges and independent organizing, betting that fear of a challenge from the left is the only thing that moves the party's center of gravity.
+
+@progressive_approach
+on-arrival: {!
+if (Q.strategic_emphasis && Q.strategic_emphasis != "progressive") {
+    Q.emphasis_changed = 1;
+}
+!}
+go-to: emphasis_changed if emphasis_changed = 1
+on-departure: strategic_emphasis = "progressive"; progressive_strength += 10; progressive_dissent -= 10; insurgent_dissent -= 5; establishment_dem_dissent -= 5;
+
+The progressive wing argues for winning the intellectual argument and legislating structural change - a public option, antitrust enforcement, campaign finance reform - through the party as it already exists.
+
+@labor_approach
+on-arrival: {!
+if (Q.strategic_emphasis && Q.strategic_emphasis != "labor_left") {
+    Q.emphasis_changed = 1;
+}
+!}
+go-to: emphasis_changed if emphasis_changed = 1
+on-departure: strategic_emphasis = "labor_left"; labor_left_strength += 10; jobs_program += 1; labor_left_dissent -= 5; union_density += 0.3;
+
+The labor-left wing argues that organizing workplaces and winning material gains through the labor movement is worth more than any number of primary challenges or floor speeches.
+
+@establishment_approach
+on-arrival: {!
+if (Q.strategic_emphasis && Q.strategic_emphasis != "establishment_dem") {
+    Q.emphasis_changed = 1;
+}
+!}
+go-to: emphasis_changed if emphasis_changed = 1
+on-departure: strategic_emphasis = "establishment_dem"; establishment_dem_strength += 10; coalition_dissent -= 1; establishment_dem_dissent -= 10; insurgent_dissent -= 5; gop_estab_relation += 5; blue_dog_dissent -= 5;
+
+The establishment wing argues the priority has to be holding the existing coalition together and winning the next election - ideological battles can wait.
+
+@emphasis_changed
+on-arrival: insurgent_dissent += 5; progressive_dissent += 5; labor_left_dissent += 5; establishment_dem_dissent += 5; blue_dog_dissent += 5;
+
+Shifting our strategic emphasis again leaves parts of the coalition feeling whiplashed.

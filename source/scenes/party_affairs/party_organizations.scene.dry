@@ -5,67 +5,63 @@ tags: party_affairs
 view-if: party_organizations_timer <= 0
 on-arrival: month_actions += 1; party_organizations_timer = 6;
 card-image: img/Mann_der_Arbeit.jpg
-max-visits: 6
-#subtitle: Outside of electoral politics, the SPD runs a social world onto itself.
+max-visits: 12
 
 = Party Organizations
 
-In addition to being a political party, the SPD is a social world onto itself, with a vast array of associated organizations which serve the social needs of their members from cradle to grave.
+Beyond electoral politics, the coalition is a whole social and organizational world - mutual aid networks, independent media, local chapters, and canvassing infrastructure.
 
-- @newspapers: Fund more newspapers and journalists.
-- @welfare: Fund more mutual aid and welfare programs.
-- @culture: Fund sports leagues, educational, and cultural programs.
-- @rb: Fund the Reichsbanner, our self-defense organization.
-- @youth: We have the reputation of being a party for old men. Support the youth organizations.
+- @media_org: Fund independent media and messaging.
+- @welfare: Fund mutual aid programs.
+- @culture: Fund community, educational, and cultural programs.
+- @canvass: Fund the canvass network, our organizing infrastructure.
+- @youth: We have a reputation as a party of the old guard. Support youth organizing.
 - @nothing: Do not increase funding for any program.
 - @easy_discard
 
-@newspapers
+@media_org
 choose-if: resources > 0
 unavailable-subtitle: Not enough resources.
 subtitle: -1 resources
 on-arrival: resources -= 1; media_timer = 0;
 go-to: media
 
-# TODO: differing outcomes based on whether you've seen media, and what kind of media you've supported.
-
-
 @welfare
 choose-if: resources > 0
 unavailable-subtitle: Not enough resources.
 subtitle: -1 resources
-on-arrival: resources -= 1; workers_aid += 1; unemployed_spd += 5*(1 - dissent);
+on-arrival: resources -= 1; working_class_dem += 3*(1-dissent); working_class_dem += 3*(1-dissent) if crisis_urgency >= 1;
 
-We have increased funding to Workers' Welfare. [? if black_thursday_seen > 0 : In an age of economic crisis, this will be helpful for improving our standing among the unemployed. ?]
+We have increased funding to mutual aid programs. [? if crisis_urgency >= 1 : In a moment of economic crisis, this is especially valuable for building trust among those hit hardest. ?]
 
 @culture
 choose-if: resources > 0
 unavailable-subtitle: Not enough resources.
 subtitle: -1 resources
-on-arrival: resources -= 1; cultural_organizations += 1; left_dissent -= 6; center_dissent -= 6; labor_dissent -= 6; reformist_dissent -= 6; neorevisionist_dissent -= 6
+on-arrival: resources -= 1; insurgent_dissent -= 6; progressive_dissent -= 6; labor_left_dissent -= 6; establishment_dem_dissent -= 6; blue_dog_dissent -= 6
 
-It is not enough for the SPD to solely be a political party. The Worker Singer's League, Worker's Sports, and our schools and libraries are crucial to our members' lives. Funding these organizations makes our members more committed to the party, even when our policies might not be to their liking.
+It is not enough to only be a political operation. Community organizations, mutual aid networks, and cultural programming are crucial to keeping members engaged even when specific policy fights don't go our way.
 
-[? if sa_strength > 500 : However, it feels frivolous to spend on sports and choirs when the fascists are murdering us in the streets. ?]
+[? if online_right_strength >= 400 : It can feel frivolous to spend on cultural programming when the online right is organizing harassment campaigns against our members. ?]
 
-@rb
+@canvass
 choose-if: resources > 0
 unavailable-subtitle: Not enough resources.
 subtitle: -1 resources
-on-arrival: resources -= 1; rb_strength  += 100; rb_militancy += 0.01; reichsbanner_timer = 0; funded_reichsbanner += 1
+on-arrival: resources -= 1; canvass_strength += 5; canvass_militancy += 0.01; canvassing_timer = 0;
 
-We have increased recruiting to the Reichsbanner.
+We have invested in expanding our canvass network.
 
 @youth
 choose-if: resources > 0
 unavailable-subtitle: Not enough resources.
 subtitle: -1 resources
-on-arrival: resources -= 1; rb_strength += 50; rb_militancy += 0.02; young_socialists += 1; left_strength += 5; neorevisionist_strength += 5; radicalization += 1;
+on-arrival: resources -= 1; canvass_strength += 3; canvass_militancy += 0.02; insurgent_strength += 5; radicalization += 1;
 
-Our new youth members flock to the left or neorevisionist wings of the party, and also bring new radicalism to the Reichsbanner.
+Our new young members flock disproportionately to the insurgent wing, and bring fresh energy to the canvass network.
 
 @nothing
 
-We do not fund any party organizations.
+We do not fund any party organizations this month.
 
 - @return: Continue...
