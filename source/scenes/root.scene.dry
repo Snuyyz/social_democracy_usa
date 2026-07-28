@@ -146,7 +146,7 @@ Q.libertarian_relation = 30;
 // action (improving relations with the establishment wing, exposing scandals,
 // electoral defeats of MAGA-aligned members, etc.)
 Q.maga_share = 3; // % of GOP caucus/coalition, starts modest in 2015, will rise
-Q.gop_estab_share = 100 - maga_share;
+Q.gop_estab_share = 100 - Q.maga_share;
 // how personally dominant is Trump within the GOP specifically (distinct from
 // maga_share, which is the ideological wing's size - this is his personal grip)
 Q.trump_dominance = 11;
