@@ -116,14 +116,6 @@ Union density: [+ union_density +]% of the workforce
 National Guard loyalty: [+ national_guard_loyalty : loyalty +]
 
 @polls
-# Always recompute vote share before displaying, rather than trusting that
-# some other scene already ran election_algorithm recently - this avoids a
-# real bug found in testing where the polls tab could show a stale or
-# all-zero result if nothing else had triggered the algorithm yet this game.
-set-jump: status.polls_display
-go-to: election_algorithm
-
-@polls_display
 on-arrival: {!
 Q.pro_democracy_disp = Math.round(Q.pro_democracy);
 Q.polarization_disp = Math.round(Q.polarization);
@@ -167,17 +159,12 @@ Polarization: [+ polarization_disp +]%
 Public sympathy for economic-left ideas: [+ socialism_disp +]%
 
 @primary_polls
-# Same fix as @polls above - always recompute before displaying.
-set-jump: status.primary_polls_display
-go-to: election_algorithm.primary_algorithm
-
-@primary_polls_display
 
 = Projected Democratic primary results
 
-(if the primary were held now): 
+(if the primary were held now):
 
-{!<span class="tooltip-text" title="Democratic-socialist insurgents (DSA/Squad-aligned).">DSA Left</span>!}: [+ primary_delegate_share_insurgent +]%
+{!<span class="tooltip-text" title="Democratic-socialist insurgents (DSA/Squad-aligned).">DSA-aligned Left</span>!}: [+ primary_delegate_share_insurgent +]%
 
 {!<span class="tooltip-text" title="Structural reformers in the Warren lane.">Progressive</span>!}: [+ primary_delegate_share_progressive +]%
 
