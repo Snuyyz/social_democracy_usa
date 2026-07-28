@@ -66,7 +66,7 @@ Yabloko is tiny and has limited support. There is not much we can do for them, a
 
 @progallianceleave
 subtitle: This will permanently hurt relations with the factions to the left of the establishment.
-choose-if: insurgent_strength <= 3; progressive_strength <= 10; labor_left_strength <= 10
+choose-if: insurgent_strength <= 3 and progressive_strength <= 10 and labor_left_strength <= 10
 unavailable-subtitle: Left-wing factions of the Democratic Party are too strong for us to leave the Progressive Alliance.
 on-arrival: resources -= 1; dues -= 1 if dues >= 1; insurgent_dissent += 45; progressive_dissent += 30; leftprogressivealliance = 1
 
