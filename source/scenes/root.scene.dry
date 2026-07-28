@@ -458,10 +458,12 @@ Q.no_majority_elections = 0;
 // called at variable times like Weimar's Reichstag
 Q.in_election = 1;
 Q.next_election_year = 2016;
-Q.next_election_month = 6;
-Q.next_election_time = 6;
-// what TYPE is the next election - "primary", "general", or "midterm"
-Q.next_election_type = "primary";
+Q.next_election_month = 11;
+Q.next_election_time = 11;
+Q.primary_election_year = 2016;
+Q.primary_election_month = 6;
+Q.primary_election_time = 6;
+Q.next_election_type = "general";
 
 Q.economic_policy_timer = 0;
 Q.foreign_policy_timer = 0;
