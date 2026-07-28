@@ -9,6 +9,102 @@ if (Q.advisor_action_timer <= 0) {
 } else {
     Q.pinnedCardsDescription = 'Advisors - next action available in ' + Q.advisor_action_timer + ' months.';
 }
+
+// ==========================================================
+// Keep the Polls and Primary tabs on the status sidebar fresh.
+// The tabbed-sidebar template reads each tab's scene content directly
+// (dendryUI.game.scenes[tabId].content) without following go-to, so a
+// scene that computes vote share via go-to: election_algorithm never
+// actually gets it computed when the tab is opened directly. Running
+// the SAME normalizer here (main runs every month, guaranteed) keeps
+// status.polls / status.primary_polls populated at all times.
+// CANONICAL COPY: this logic must be kept in sync with the generic
+// normalizer in election_algorithm.scene.dry and the primary algorithm
+// in election_algorithm.scene.dry's @primary_algorithm - if you change
+// the math there, mirror the change here too.
+for (var c of Q.classes) {
+    var class_votes = 0;
+    for (var party of Q.parties) {
+        if (Q[c+'_'+party] < 0) {
+            Q[c+'_'+party] = 0;
+        }
+        class_votes += Q[c+'_'+party];
+    }
+    for (var party of Q.parties) {
+        Q[c + '_' + party + '_normalized'] = 100*Q[c+'_'+party]/class_votes;
+        Q[c + '_' + party + '_display'] = Math.round(100*Q[c+'_'+party]/class_votes);
+    }
+}
+var total_support = 0;
+for (var party of Q.parties) {
+    var party_support = 0;
+    for (var c of Q.classes) {
+        party_support += Q.old_demographics ? Q[c]*Q[c+'_'+party] : Q[c]*Q[c+'_'+party+'_normalized'];
+    }
+    Q[party + '_support'] = party_support;
+    total_support += party_support;
+}
+for (var party of Q.parties) {
+    Q[party+'_normalized'] = Q[party + '_support']/total_support;
+    Q[party+'_votes_dec'] = Math.round(Q[party+'_normalized']*1000)/10;
+    if (Q.use_decimals) {
+        Q[party+'_votes'] = Q[party+'_votes_dec'];
+        Q[party + '_votes_disp'] = Q[party+'_votes'];
+    } else {
+        Q[party+'_votes'] = Math.round(Q[party+'_normalized']*100);
+        Q[party + '_votes_disp'] = Q[party+'_votes_dec'].toFixed(1);
+    }
+}
+
+var active_factions = [];
+for (var f of Q.factions) {
+    if (Q.splittable_factions.indexOf(f) === -1 || Q[f + '_split'] !== 1) {
+        active_factions.push(f);
+    }
+}
+Q.active_primary_factions = active_factions;
+for (var c2 of Q.classes) {
+    var class_votes2 = 0;
+    for (var f2 of active_factions) {
+        var key = 'dem_primary_' + c2 + '_' + f2;
+        if (Q[key] === undefined) {
+            Q[key] = Q['dem_primary_' + f2 + '_share'] || 0;
+        }
+        if (Q[key] < 0) Q[key] = 0;
+        class_votes2 += Q[key];
+    }
+    for (var f2 of active_factions) {
+        var key2 = 'dem_primary_' + c2 + '_' + f2;
+        Q[key2 + '_normalized'] = class_votes2 > 0 ? 100*Q[key2]/class_votes2 : (100/active_factions.length);
+    }
+}
+var total_support2 = 0;
+for (var f3 of active_factions) {
+    var support = 0;
+    for (var c3 of Q.classes) {
+        support += Q[c3] * Q['dem_primary_' + c3 + '_' + f3 + '_normalized'];
+    }
+    Q['primary_support_' + f3] = support;
+    total_support2 += support;
+}
+for (var f4 of Q.factions) {
+    if (active_factions.indexOf(f4) !== -1) {
+        Q['primary_delegate_share_' + f4] = Math.round(1000*Q['primary_support_' + f4]/total_support2)/10;
+    } else {
+        Q['primary_delegate_share_' + f4] = 0;
+    }
+}
+var winner = 'establishment_dem';
+var best = -1;
+for (var f5 of active_factions) {
+    if (Q['primary_delegate_share_' + f5] > best) {
+        best = Q['primary_delegate_share_' + f5];
+        winner = f5;
+    } else if (Q['primary_delegate_share_' + f5] === best && f5 === 'insurgent') {
+        winner = f5;
+    }
+}
+Q.primary_winner_faction = winner;
 !}
 max-cards: 3
 
@@ -30,6 +126,95 @@ if (Q.advisor_action_timer <= 0) {
 } else {
     Q.pinnedCardsDescription = 'Advisors - next action available in ' + Q.advisor_action_timer + ' months.';
 }
+
+// ==========================================================
+// Keep the Polls and Primary tabs on the status sidebar fresh.
+// IDENTICAL to the block in @main above - see that copy for the full
+// explanation. Keep both copies byte-for-byte identical when editing.
+// ==========================================================
+for (var c of Q.classes) {
+    var class_votes = 0;
+    for (var party of Q.parties) {
+        if (Q[c+'_'+party] < 0) {
+            Q[c+'_'+party] = 0;
+        }
+        class_votes += Q[c+'_'+party];
+    }
+    for (var party of Q.parties) {
+        Q[c + '_' + party + '_normalized'] = 100*Q[c+'_'+party]/class_votes;
+        Q[c + '_' + party + '_display'] = Math.round(100*Q[c+'_'+party]/class_votes);
+    }
+}
+var total_support = 0;
+for (var party of Q.parties) {
+    var party_support = 0;
+    for (var c of Q.classes) {
+        party_support += Q.old_demographics ? Q[c]*Q[c+'_'+party] : Q[c]*Q[c+'_'+party+'_normalized'];
+    }
+    Q[party + '_support'] = party_support;
+    total_support += party_support;
+}
+for (var party of Q.parties) {
+    Q[party+'_normalized'] = Q[party + '_support']/total_support;
+    Q[party+'_votes_dec'] = Math.round(Q[party+'_normalized']*1000)/10;
+    if (Q.use_decimals) {
+        Q[party+'_votes'] = Q[party+'_votes_dec'];
+        Q[party + '_votes_disp'] = Q[party+'_votes'];
+    } else {
+        Q[party+'_votes'] = Math.round(Q[party+'_normalized']*100);
+        Q[party + '_votes_disp'] = Q[party+'_votes_dec'].toFixed(1);
+    }
+}
+
+var active_factions = [];
+for (var f of Q.factions) {
+    if (Q.splittable_factions.indexOf(f) === -1 || Q[f + '_split'] !== 1) {
+        active_factions.push(f);
+    }
+}
+Q.active_primary_factions = active_factions;
+for (var c2 of Q.classes) {
+    var class_votes2 = 0;
+    for (var f2 of active_factions) {
+        var key = 'dem_primary_' + c2 + '_' + f2;
+        if (Q[key] === undefined) {
+            Q[key] = Q['dem_primary_' + f2 + '_share'] || 0;
+        }
+        if (Q[key] < 0) Q[key] = 0;
+        class_votes2 += Q[key];
+    }
+    for (var f2 of active_factions) {
+        var key2 = 'dem_primary_' + c2 + '_' + f2;
+        Q[key2 + '_normalized'] = class_votes2 > 0 ? 100*Q[key2]/class_votes2 : (100/active_factions.length);
+    }
+}
+var total_support2 = 0;
+for (var f3 of active_factions) {
+    var support = 0;
+    for (var c3 of Q.classes) {
+        support += Q[c3] * Q['dem_primary_' + c3 + '_' + f3 + '_normalized'];
+    }
+    Q['primary_support_' + f3] = support;
+    total_support2 += support;
+}
+for (var f4 of Q.factions) {
+    if (active_factions.indexOf(f4) !== -1) {
+        Q['primary_delegate_share_' + f4] = Math.round(1000*Q['primary_support_' + f4]/total_support2)/10;
+    } else {
+        Q['primary_delegate_share_' + f4] = 0;
+    }
+}
+var winner = 'establishment_dem';
+var best = -1;
+for (var f5 of active_factions) {
+    if (Q['primary_delegate_share_' + f5] > best) {
+        best = Q['primary_delegate_share_' + f5];
+        winner = f5;
+    } else if (Q['primary_delegate_share_' + f5] === best && f5 === 'insurgent') {
+        winner = f5;
+    }
+}
+Q.primary_winner_faction = winner;
 !}
 max-cards: 4
 
