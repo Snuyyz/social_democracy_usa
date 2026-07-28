@@ -478,6 +478,102 @@ Q.frontline_rep_advisor = 0; // [FICTIONAL]
 Q.pollster_advisor = 0; // [FICTIONAL]
 Q.legal_advisor = 0; // [FICTIONAL]
 Q.messaging_advisor = 0; // [FICTIONAL]
+
+// ==========================================================
+// Run the vote-share/primary-delegate normalizer once immediately at game
+// start. The status sidebar's Polls/Primary tabs are part of the persistent
+// page chrome and are technically clickable even from this very first
+// screen, before the player has visited main.scene.dry (which normally
+// keeps these numbers fresh every month). Without this, an early tab click
+// would show 0%/undefined until the first month passes.
+// CANONICAL COPY 3 of 3 - kept in sync with election_algorithm.scene.dry's
+// generic algorithm + @primary_algorithm, and with the identical copies in
+// main.scene.dry's @main and @main_easy on-arrival blocks. If you change
+// the election math, update all three copies and diff them to confirm they
+// still match.
+for (var c of Q.classes) {
+    var class_votes = 0;
+    for (var party of Q.parties) {
+        if (Q[c+'_'+party] < 0) {
+            Q[c+'_'+party] = 0;
+        }
+        class_votes += Q[c+'_'+party];
+    }
+    for (var party of Q.parties) {
+        Q[c + '_' + party + '_normalized'] = 100*Q[c+'_'+party]/class_votes;
+        Q[c + '_' + party + '_display'] = Math.round(100*Q[c+'_'+party]/class_votes);
+    }
+}
+var total_support = 0;
+for (var party of Q.parties) {
+    var party_support = 0;
+    for (var c of Q.classes) {
+        party_support += Q.old_demographics ? Q[c]*Q[c+'_'+party] : Q[c]*Q[c+'_'+party+'_normalized'];
+    }
+    Q[party + '_support'] = party_support;
+    total_support += party_support;
+}
+for (var party of Q.parties) {
+    Q[party+'_normalized'] = Q[party + '_support']/total_support;
+    Q[party+'_votes_dec'] = Math.round(Q[party+'_normalized']*1000)/10;
+    if (Q.use_decimals) {
+        Q[party+'_votes'] = Q[party+'_votes_dec'];
+        Q[party + '_votes_disp'] = Q[party+'_votes'];
+    } else {
+        Q[party+'_votes'] = Math.round(Q[party+'_normalized']*100);
+        Q[party + '_votes_disp'] = Q[party+'_votes_dec'].toFixed(1);
+    }
+}
+
+var active_factions = [];
+for (var f of Q.factions) {
+    if (Q.splittable_factions.indexOf(f) === -1 || Q[f + '_split'] !== 1) {
+        active_factions.push(f);
+    }
+}
+Q.active_primary_factions = active_factions;
+for (var c2 of Q.classes) {
+    var class_votes2 = 0;
+    for (var f2 of active_factions) {
+        var key = 'dem_primary_' + c2 + '_' + f2;
+        if (Q[key] === undefined) {
+            Q[key] = Q['dem_primary_' + f2 + '_share'] || 0;
+        }
+        if (Q[key] < 0) Q[key] = 0;
+        class_votes2 += Q[key];
+    }
+    for (var f2 of active_factions) {
+        var key2 = 'dem_primary_' + c2 + '_' + f2;
+        Q[key2 + '_normalized'] = class_votes2 > 0 ? 100*Q[key2]/class_votes2 : (100/active_factions.length);
+    }
+}
+var total_support2 = 0;
+for (var f3 of active_factions) {
+    var support = 0;
+    for (var c3 of Q.classes) {
+        support += Q[c3] * Q['dem_primary_' + c3 + '_' + f3 + '_normalized'];
+    }
+    Q['primary_support_' + f3] = support;
+    total_support2 += support;
+}
+for (var f4 of Q.factions) {
+    if (active_factions.indexOf(f4) !== -1) {
+        Q['primary_delegate_share_' + f4] = Math.round(1000*Q['primary_support_' + f4]/total_support2)/10;
+    } else {
+        Q['primary_delegate_share_' + f4] = 0;
+    }
+}
+var winner = 'establishment_dem';
+var best = -1;
+for (var f5 of active_factions) {
+    if (Q['primary_delegate_share_' + f5] > best) {
+        best = Q['primary_delegate_share_' + f5];
+        winner = f5;
+    } else if (Q['primary_delegate_share_' + f5] === best && f5 === 'insurgent') {
+        winner = f5;
+    }
+}
+Q.primary_winner_faction = winner;
 !}
 set-bg: img/map_2.jpg
 new-page: true
@@ -531,5 +627,3 @@ go-to: main if difficulty >= 0; main.main_easy if difficulty < 0
 It is the tenth year since the financial crisis, and the recovery has been long, uneven, and deeply unequal. A generation that came of age during the crash carries record student debt into a job market of stagnant wages. Something is stirring on the American left for the first time in decades: a small, once-dormant socialist organization is growing again, and an independent senator from Vermont is weighing a most unlikely campaign.
 
 Now, the task ahead is to turn this stirring into organized power - within a Democratic Party that does not yet know what has arrived at its door, and against a Republican Party where an insurgency of its own is about to erupt.
-
-
