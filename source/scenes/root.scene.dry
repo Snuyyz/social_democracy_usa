@@ -337,7 +337,7 @@ Q.economic_records = [];
 // STATE OF GOVERNMENT (was: president/chancellor/cabinet)
 // ==========================================================
 Q.president = "Obama";
-Q.president_party = "D";
+Q.president_party = "dem";
 // is the player's coalition currently holding the White House?
 Q.dem_president = 1;
 
