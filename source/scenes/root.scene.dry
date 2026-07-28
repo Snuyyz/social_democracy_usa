@@ -145,11 +145,11 @@ Q.libertarian_relation = 30;
 // control vs. the traditional/establishment wing. This can be moved by player
 // action (improving relations with the establishment wing, exposing scandals,
 // electoral defeats of MAGA-aligned members, etc.)
-Q.maga_share = 55; // % of GOP caucus/coalition, starts modest in 2015, will rise
-Q.gop_estab_share = 45;
+Q.maga_share = 3; // % of GOP caucus/coalition, starts modest in 2015, will rise
+Q.gop_estab_share = 100 -= Q.maga_share;
 // how personally dominant is Trump within the GOP specifically (distinct from
 // maga_share, which is the ideological wing's size - this is his personal grip)
-Q.trump_dominance = 20;
+Q.trump_dominance = 13;
 
 Q.gop_leader = "the Republican leadership";
 Q.maga_leader = "Trump";
@@ -337,7 +337,7 @@ Q.economic_records = [];
 // STATE OF GOVERNMENT (was: president/chancellor/cabinet)
 // ==========================================================
 Q.president = "Obama";
-Q.president_party = "dem";
+Q.president_party = "D";
 // is the player's coalition currently holding the White House?
 Q.dem_president = 1;
 
@@ -345,6 +345,7 @@ Q.dem_president = 1;
 Q.treasury_secretary = "Lew";
 Q.state_secretary = "Kerry";
 Q.labor_secretary = "Perez";
+Q.defense_secretary = "Hagel";
 Q.attorney_general = "Lynch";
 
 // does the insurgent/progressive wing have any cabinet-level influence yet?
@@ -374,9 +375,19 @@ Q.jobs_program_implemented = 0;
 // foreign policy trackers (much lighter than the original - US is a global
 // hegemon here, not a defeated power negotiating reparations/rearmament)
 Q.foreign_policy_restraint = 0; // support within the coalition for restraint/anti-interventionism
-Q.nato_relation = 0;
+Q.fruk_relation = 0;
+Q.germany_relation = 0;
+Q.russia_relation = 0;
+Q.ukraine_relation = 0;
 Q.china_relation = 0;
+Q.israel_relation = 0;
+Q.eu_relation = 0;
+Q.taiwan_relation = 0;
+Q.japan_relation = 0;
 Q.latin_america_relation = 0;
+Q.progressive_alliance_relation = 0;
+Q.progressive_international_relation = 0;
+Q.socialist_international_relation = 0;
 Q.immigration_enforcement = 0; // relative to 2015 baseline, can go negative (less enforcement)
 
 // science/education
@@ -447,8 +458,8 @@ Q.no_majority_elections = 0;
 // called at variable times like Weimar's Reichstag
 Q.in_election = 1;
 Q.next_election_year = 2016;
-Q.next_election_month = 11;
-Q.next_election_time = 11;
+Q.next_election_month = 6;
+Q.next_election_time = 6;
 // what TYPE is the next election - "primary", "general", or "midterm"
 Q.next_election_type = "primary";
 
@@ -475,9 +486,9 @@ Q.squad_under_fire_timer = 0;
 // initial advisors - all fictionalized composites, all initially aligned
 // with the insurgent wing (the player's home faction), same as the original
 // starts you with your own faction's people before you can recruit others.
-Q.organizer_advisor = 1; // [FICTIONAL] a veteran DSA/labor organizer
-Q.strategist_advisor = 1; // [FICTIONAL] an electoral strategist
-Q.policy_advisor = 1; // [FICTIONAL] a policy/legislative-drafting advisor
+Q.organizer_advisor = 0; // [FICTIONAL] a veteran DSA/labor organizer
+Q.strategist_advisor = 0; // [FICTIONAL] an electoral strategist
+Q.policy_advisor = 0; // [FICTIONAL] a policy/legislative-drafting advisor
 
 // progressive-lane alternate advisors
 Q.wonk_advisor = 0; // [FICTIONAL]
@@ -488,16 +499,16 @@ Q.union_president_advisor = 0; // [FICTIONAL]
 Q.rank_and_file_advisor = 0; // [FICTIONAL]
 
 // establishment_dem advisors
-Q.party_chair_advisor = 0; // [FICTIONAL]
+Q.party_chair_advisor = 1; // [FICTIONAL]
 Q.donor_liaison_advisor = 0; // [FICTIONAL]
 
 // blue_dog advisors
-Q.frontline_rep_advisor = 0; // [FICTIONAL]
+Q.frontline_rep_advisor = 1; // [FICTIONAL]
 
 // nonfactional advisors
 Q.pollster_advisor = 0; // [FICTIONAL]
 Q.legal_advisor = 0; // [FICTIONAL]
-Q.messaging_advisor = 0; // [FICTIONAL]
+Q.messaging_advisor = 1; // [FICTIONAL]
 
 // ==========================================================
 // Run the vote-share/primary-delegate normalizer once immediately at game
@@ -598,9 +609,9 @@ Q.primary_winner_faction = winner;
 set-bg: img/map_2.jpg
 new-page: true
 
-> *"The reports of my death have been greatly exaggerated - but so, sometimes, have the reports of my inevitable victory. A movement is not a single election; it is the work of organizing people to build power together, over years, against everything arrayed to stop them."*
+> *"A nation will not survive morally or economically when so few have so much and so many have so little."*
 
- - fictional epigraph, in the spirit of democratic-socialist organizing literature of the period
+ - Bernie Sanders, self-described Democratic Socialist and independent Senator from Vermont since 2007.
 
 This is a game of alternate history. While plausibility is a major concern, keep in mind that this is a *game*, and that any divergence from actual events will necessarily involve some element of make-believe. Real political parties and institutions are referenced factually; specific advisors, rivals, and rank-and-file characters are fictionalized composites rather than real people. Please let the author know if there are any glaring mistakes.
 
