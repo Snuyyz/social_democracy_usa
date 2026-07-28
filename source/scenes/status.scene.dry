@@ -44,7 +44,7 @@ Senate: Democrats [+ dem_senate_seats +] - Republicans [+ gop_senate_seats +] ([
 
 Next election: [+ next_election_month : month +] [+ next_election_year +]
 
-Primary election date: [+ primary_election_month : month +] {+ primary_election_year +]
+Primary election date: [+ primary_election_month : month +] [+ primary_election_year +]
 
 = Economics
 
